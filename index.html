@@ -48,15 +48,16 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- ============ FIREBASE SETUP ============ -->
+    <!-- ============ FIREBASE SETUP (v12.18.0) ============ -->
     <script type="importmap">
         {
             "imports": {
-                "firebase-app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
-                "firebase-auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
-                "firebase-firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js",
-                "firebase-database": "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js",
-                "firebase-storage": "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"
+                "firebase-app": "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js",
+                "firebase-auth": "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js",
+                "firebase-firestore": "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js",
+                "firebase-database": "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js",
+                "firebase-storage": "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js",
+                "firebase-analytics": "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js"
             }
         }
     </script>
@@ -2216,7 +2217,7 @@
                     </button>
                 </div>
 
-                <!-- الميزات الأونلاين (تظهر حسب حالة التسجيل) -->
+                <!-- الميزات الأونلاين -->
                 <div id="online-features" class="grid grid-cols-3 gap-3 mt-2">
                     <button onclick="navigateTo('friends')" id="btn-friends" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
                         <i data-lucide="users" class="w-6 h-6" style="color: var(--accent-color);"></i>
@@ -2997,9 +2998,10 @@
     <!-- ============================================================ -->
     <script type="module">
         // ============================================================
-        // 🔥 FIREBASE IMPORTS
+        // 🔥 FIREBASE IMPORTS (v12.18.0)
         // ============================================================
         import { initializeApp } from 'firebase-app';
+        import { getAnalytics } from 'firebase-analytics';
         import { 
             getAuth, signInWithPopup, GoogleAuthProvider, 
             createUserWithEmailAndPassword, signInWithEmailAndPassword,
@@ -3019,18 +3021,21 @@
         } from 'firebase-storage';
 
         // ============================================================
-        // 🔑 FIREBASE CONFIG
+        // 🔑 FIREBASE CONFIG (بتاعتك)
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyA2e4_W1zBCE0vIcCuLN5Z7ClPeDrKStmQ",
             authDomain: "xo-arena-a2250.firebaseapp.com",
+            databaseURL: "https://xo-arena-a2250-default-rtdb.firebaseio.com",
             projectId: "xo-arena-a2250",
             storageBucket: "xo-arena-a2250.firebasestorage.app",
             messagingSenderId: "29922558138",
-            appId: "1:29922558138:web:8f5fff4f5afb62dd96c283"
+            appId: "1:29922558138:web:8f5fff4f5afb62dd96c283",
+            measurementId: "G-3L0S8BXKBW"
         };
 
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const rtdb = getDatabase(app);
@@ -3043,6 +3048,7 @@
         window.db = db;
         window.rtdb = rtdb;
         window.storage = storage;
+        window.analytics = analytics;
         window.signInWithPopup = signInWithPopup;
         window.GoogleAuthProvider = GoogleAuthProvider;
         window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
@@ -3086,15 +3092,9 @@
         // ============================================================
         let currentUser = null;
         let currentUserData = null;
-        let authListeners = [];
 
         window.getCurrentUser = () => currentUser;
         window.getCurrentUserData = () => currentUserData;
-
-        window.onAuthChange = (callback) => {
-            authListeners.push(callback);
-            if (currentUser) callback(currentUser, currentUserData);
-        };
 
         // ============================================================
         // 🔐 AUTH FUNCTIONS
@@ -3162,8 +3162,10 @@
                 }
                 errorEl.style.display = 'none';
                 closeAuthModal();
+                showNotification(`مرحباً ${username}!`, 'success');
             } catch (error) {
-                errorEl.textContent = getAuthErrorMessage(error.code);
+                console.error('Google login error:', error);
+                errorEl.textContent = getAuthErrorMessage(error.code) || 'حدث خطأ في تسجيل الدخول بـ Google';
                 errorEl.style.display = 'block';
             }
         };
@@ -3191,7 +3193,9 @@
                 'auth/weak-password': 'كلمة المرور ضعيفة (6 أحرف على الأقل)',
                 'auth/too-many-requests': 'محاولات كثيرة جداً، حاول لاحقاً',
                 'auth/popup-closed-by-user': 'تم إغلاق نافذة تسجيل الدخول',
-                'auth/cancelled-popup-request': 'تم إلغاء طلب تسجيل الدخول'
+                'auth/cancelled-popup-request': 'تم إلغاء طلب تسجيل الدخول',
+                'auth/network-request-failed': 'خطأ في الاتصال بالإنترنت',
+                'auth/internal-error': 'حدث خطأ داخلي، حاول مرة أخرى'
             };
             return messages[code] || 'حدث خطأ غير معروف';
         }
@@ -3224,7 +3228,6 @@
             const rankedPoints = document.getElementById('home-ranked-points');
             const xp = document.getElementById('home-xp');
             
-            // تحديث الأيقونات 🔒
             const locks = {
                 friends: document.getElementById('lock-friends'),
                 rooms: document.getElementById('lock-rooms'),
@@ -3243,7 +3246,6 @@
                 if (xp) xp.textContent = `${currentUserData.xp || 0} XP`;
                 if (rankedPoints) rankedPoints.textContent = currentUserData.rankedPoints || 0;
                 
-                // إزالة 🔒 من جميع الأزرار
                 Object.values(locks).forEach(lock => {
                     if (lock) lock.style.display = 'none';
                 });
@@ -3256,7 +3258,6 @@
                     status.style.color = '#fff';
                 }
                 
-                // إظهار 🔒
                 Object.values(locks).forEach(lock => {
                     if (lock) lock.style.display = 'inline';
                 });
@@ -3337,15 +3338,8 @@
                     });
                     
                     updateAuthUI();
-                    
-                    if (!document.getElementById('page-home').classList.contains('active')) {
-                        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                        document.getElementById('page-home').classList.add('active');
-                    }
-                    
                     init();
                     renderAll();
-                    showNotification(`مرحباً ${currentUserData.username || 'لاعب'}!`, 'success');
                 }
             } else {
                 if (currentUser) {
@@ -4126,7 +4120,7 @@
         }
 
         // ============================================================
-        // ⚔️ RANKED MATCHES (مباريات تنافسية حقيقية)
+        // ⚔️ RANKED MATCHES
         // ============================================================
         let rankedMatchmaking = false;
 
@@ -4145,7 +4139,6 @@
             showNotification('جاري البحث عن خصم تنافسي...', 'info');
             
             try {
-                // البحث عن لاعب آخر في وضع البحث التنافسي
                 const rankedRef = ref(rtdb, 'ranked_queue');
                 const snapshot = await get(rankedRef);
                 
@@ -4154,7 +4147,6 @@
                 
                 if (snapshot.exists()) {
                     const queue = snapshot.val();
-                    // البحث عن لاعب آخر غير نفسه
                     for (const [key, data] of Object.entries(queue)) {
                         if (data.uid !== currentUser.uid && data.status === 'searching') {
                             opponentId = key;
@@ -4165,13 +4157,11 @@
                 }
                 
                 if (opponentId && opponentData) {
-                    // تم العثور على خصم
                     await remove(ref(rtdb, `ranked_queue/${opponentId}`));
                     await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
                     
                     rankedMatchmaking = false;
                     
-                    // إنشاء غرفة للمباراة التنافسية
                     const roomId = generateRoomId();
                     const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
                     
@@ -4195,7 +4185,6 @@
                         isRanked: true
                     });
                     
-                    // تحديث حالة المستخدم في المباراة
                     await update(ref(rtdb, `status/${currentUser.uid}`), { 
                         inRankedMatch: roomId,
                         rankedMatchStatus: 'playing'
@@ -4203,16 +4192,13 @@
                     
                     showNotification(`تم العثور على خصم! ${opponentData.username}`, 'success');
                     
-                    // الانتقال إلى صفحة اللعب
                     navigateTo('game');
                     document.getElementById('gameModeIndicator').innerHTML = 
                         '<span style="color: #ff6b35;">⚔️ مباراة تنافسية ضد ' + opponentData.username + '</span>';
                     
-                    // بدء الاستماع للمباراة التنافسية
                     listenToRankedMatch(roomId);
                     
                 } else {
-                    // لا يوجد خصم، نضيف المستخدم لقائمة الانتظار
                     await set(ref(rtdb, `ranked_queue/${currentUser.uid}`), {
                         uid: currentUser.uid,
                         username: currentUserData.username || 'Player',
@@ -4222,7 +4208,6 @@
                     
                     showNotification('جاري البحث عن خصم... انتظر قليلاً', 'info');
                     
-                    // الاستماع للتغييرات في قائمة الانتظار
                     const queueRef = ref(rtdb, 'ranked_queue');
                     const unsubscribe = onValue(queueRef, async (snap) => {
                         if (!snap.exists()) return;
@@ -4243,7 +4228,6 @@
                             await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
                             rankedMatchmaking = false;
                             
-                            // إنشاء غرفة المباراة
                             const roomId = generateRoomId();
                             const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
                             
@@ -4282,7 +4266,6 @@
                         }
                     });
                     
-                    // مهلة 30 ثانية
                     setTimeout(() => {
                         if (rankedMatchmaking) {
                             unsubscribe();
@@ -4299,8 +4282,8 @@
             }
         };
 
-        // الاستماع للمباراة التنافسية
         function listenToRankedMatch(roomId) {
+            currentRoomId = roomId;
             const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
             
             const unsubscribe = onValue(roomRef, (snapshot) => {
@@ -4310,8 +4293,6 @@
                 }
                 
                 const roomData = snapshot.val();
-                
-                // تحديث لوحة اللعب
                 const board = roomData.board;
                 const currentTurn = roomData.currentTurn;
                 
@@ -4334,7 +4315,6 @@
                     statusEl.innerHTML = `الدور: <span style="color: ${color};">${currentTurn}</span>`;
                 }
                 
-                // إذا انتهت المباراة
                 if (roomData.winner || roomData.status === 'finished') {
                     handleRankedGameEnd(roomData, roomId);
                     unsubscribe();
@@ -4342,11 +4322,9 @@
             });
         }
 
-        // عمل حركة في المباراة التنافسية
         window.makeRankedMove = async (index) => {
             if (!currentUser || !currentRoomId) return;
             
-            // نستخدم نفس الـ roomId للمباراة التنافسية
             const roomRef = ref(rtdb, `ranked_matches/${currentRoomId}`);
             const snapshot = await get(roomRef);
             
@@ -4387,7 +4365,6 @@
             });
         };
 
-        // معالجة نهاية المباراة التنافسية
         function handleRankedGameEnd(roomData, roomId) {
             const statusEl = document.getElementById('game-status');
             
@@ -4395,7 +4372,6 @@
                 statusEl.innerHTML = '<span style="color: var(--text-secondary);">تعادل تنافسي!</span>';
                 showNotification('تعادل تنافسي! +3 نقاط', 'success');
                 
-                // تحديث نقاط التنافسية
                 state.rankedPoints = (state.rankedPoints || 0) + 3;
                 state.rankedDraws = (state.rankedDraws || 0) + 1;
                 
@@ -4444,13 +4420,13 @@
             
             document.getElementById('game-controls').style.opacity = '1';
             
-            // حذف المباراة من قاعدة البيانات
             setTimeout(async () => {
                 await remove(ref(rtdb, `ranked_matches/${roomId}`));
                 await update(ref(rtdb, `status/${currentUser.uid}`), { 
                     inRankedMatch: null,
                     rankedMatchStatus: null
                 });
+                currentRoomId = null;
             }, 5000);
         }
 
@@ -4460,22 +4436,20 @@
         const pages = ['about', 'privacy', 'terms', 'guide', 'blog', 'article1', 'article2', 'article3'];
         pages.forEach(page => {
             const el = document.getElementById(`page-${page}`);
-            if (el) {
-                if (el.innerHTML.trim() === '...' || el.innerHTML.trim() === '') {
-                    el.innerHTML = `
-                        <div class="w-full max-w-lg relative z-10">
-                            <div class="flex items-center gap-4 mb-6">
-                                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                                </button>
-                                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">${page.replace('article', 'مقال ')}</h1>
-                            </div>
-                            <div class="glass-card rounded-2xl p-6">
-                                <p style="color: var(--text-primary);">محتوى هذه الصفحة قيد التطوير...</p>
-                            </div>
+            if (el && (el.innerHTML.trim() === '...' || el.innerHTML.trim() === '')) {
+                el.innerHTML = `
+                    <div class="w-full max-w-lg relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                                <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
+                            </button>
+                            <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">${page.replace('article', 'مقال ')}</h1>
                         </div>
-                    `;
-                }
+                        <div class="glass-card rounded-2xl p-6">
+                            <p style="color: var(--text-primary);">محتوى هذه الصفحة قيد التطوير...</p>
+                        </div>
+                    </div>
+                `;
             }
         });
 
@@ -4502,7 +4476,8 @@
         window.handleRankedGameEnd = handleRankedGameEnd;
 
         console.log('🚀 XO Arena v6.0 - Online Edition Loaded!');
-        console.log('🔥 Firebase connected successfully!');
+        console.log('🔥 Firebase v12.18.0 connected successfully!');
+        console.log('✅ Google Authentication enabled');
 
     </script>
 
@@ -4909,13 +4884,11 @@
         function handleMove(index) {
             if (state.board[index] || state.winner || state.isComputerTurn) return;
             
-            // إذا كانت مباراة تنافسية أونلاين
             if (state.gameMode === 'ranked' && window.makeRankedMove) {
                 window.makeRankedMove(index);
                 return;
             }
             
-            // إذا كانت مباراة أونلاين عادية
             if (state.gameMode === 'online' && window.makeOnlineMove) {
                 window.makeOnlineMove(index);
                 return;
@@ -5058,7 +5031,6 @@
                 }
             } else if (state.gameMode === 'ranked') {
                 // معالجة المباريات التنافسية موجودة في الكود الجديد
-                // لكن نضيف معالجة بسيطة هنا للتوافق المحلي
                 if (result.winner === playerSymbol) {
                     state.stats.wins++;
                     state.currentWinStreak++;
@@ -6640,8 +6612,9 @@
 
         console.log('🎮 XO Arena v6.0 - Fully Loaded!');
         console.log('🌟 Online features: Login, Friends, Rooms, Chat, Leaderboard, Ranked, Gifts!');
-        console.log('🔥 Powered by Firebase!');
+        console.log('🔥 Powered by Firebase v12.18.0!');
         console.log('🔒 Online features require authentication.');
+        console.log('✅ Google Authentication Enabled');
 
     </script>
 </body>
