@@ -2107,10 +2107,6 @@
                 <i data-lucide="volume-2"></i>
                 <span>تشغيل / إيقاف المؤثرات الصوتية</span>
             </button>
-            <button onclick="logoutUser()" class="settings-menu-item" style="border-color: var(--accent-secondary);">
-                <i data-lucide="log-out" style="color: var(--accent-secondary);"></i>
-                <span style="color: var(--accent-secondary);">تسجيل الخروج</span>
-            </button>
         </div>
 
         <!-- معلومات إضافية من الفوتر -->
@@ -2121,12 +2117,12 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- ==================== PAGE: HOME (معدل) ===================== -->
+    <!-- ==================== PAGE: HOME ============================= -->
     <!-- ============================================================ -->
     <div id="page-home" class="page flex-col items-center px-4 py-8">
         <div class="w-full max-w-lg relative z-10">
             
-            <!-- Profile Card with Frame + Login/Logout Button -->
+            <!-- Profile Card with Auth Button -->
             <div id="homeProfileCard" class="glass-card rounded-2xl p-4 mb-6 animate-slide-up">
                 <div class="flex items-center gap-4">
                     <div id="homeProfileFrame" class="rounded-full p-1">
@@ -2136,7 +2132,7 @@
                         <div class="flex items-center gap-2 mb-1">
                             <span id="home-username" class="font-bold text-white">Player</span>
                             <span id="home-rank" class="text-xs px-2 py-0.5 rounded-full" style="background: var(--accent-color); color: var(--bg-color);">Rookie</span>
-                            <span id="home-online-status" class="text-xs px-2 py-0.5 rounded-full" style="background: #00ff88; color: #000;">🟢 متصل</span>
+                            <span id="home-online-status" class="text-xs px-2 py-0.5 rounded-full" style="background: #ff3366; color: #fff;">🔴 غير متصل</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i data-lucide="trophy" class="w-4 h-4" style="color: #ffd700;"></i>
@@ -2220,28 +2216,28 @@
                     </button>
                 </div>
 
-                <!-- ========== الميزات الأونلاين (محمية) ========== -->
-                <div class="grid grid-cols-3 gap-3 mt-2">
-                    <button onclick="requireAuthThenNavigate('friends')" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
+                <!-- الميزات الأونلاين (تظهر حسب حالة التسجيل) -->
+                <div id="online-features" class="grid grid-cols-3 gap-3 mt-2">
+                    <button onclick="navigateTo('friends')" id="btn-friends" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
                         <i data-lucide="users" class="w-6 h-6" style="color: var(--accent-color);"></i>
                         <span style="color: var(--text-primary);">الأصدقاء</span>
-                        <span class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
+                        <span id="lock-friends" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
                     </button>
-                    <button onclick="requireAuthThenNavigate('rooms')" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
+                    <button onclick="navigateTo('rooms')" id="btn-rooms" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
                         <i data-lucide="door-open" class="w-6 h-6" style="color: #ffd700;"></i>
                         <span style="color: var(--text-primary);">الغرف</span>
-                        <span class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
+                        <span id="lock-rooms" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
                     </button>
-                    <button onclick="requireAuthThenNavigate('leaderboard')" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
+                    <button onclick="navigateTo('leaderboard')" id="btn-leaderboard" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
                         <i data-lucide="trophy" class="w-6 h-6" style="color: #ff6b35;"></i>
                         <span style="color: var(--text-primary);">المتصدرين</span>
-                        <span class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
+                        <span id="lock-leaderboard" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
                     </button>
                 </div>
-                <button onclick="requireAuthThenNavigate('ranked')" class="neon-btn w-full rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold" style="border-color: #ff6b35;">
+                <button onclick="navigateTo('ranked')" id="btn-ranked" class="neon-btn w-full rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold" style="border-color: #ff6b35;">
                     <i data-lucide="sword" class="w-5 h-5" style="color: #ff6b35;"></i>
                     <span style="color: var(--text-primary);">المباريات التنافسية</span>
-                    <span class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
+                    <span id="lock-ranked" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
                 </button>
             </div>
 
@@ -2302,7 +2298,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- ==================== AUTH MODAL ============================ -->
+    <!-- ==================== AUTH MODAL ============================= -->
     <!-- ============================================================ -->
     <div id="auth-modal-overlay" class="modal-overlay" onclick="closeAuthModal()"></div>
     <div id="auth-modal" class="modal-content glass-card rounded-2xl p-6 w-full max-w-md">
@@ -2349,184 +2345,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- ==================== PAGE: FRIENDS ========================== -->
-    <!-- ============================================================ -->
-    <div id="page-friends" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الأصدقاء</h1>
-            </div>
-
-            <!-- Add Friend -->
-            <div class="glass-card rounded-xl p-4 mb-6">
-                <h3 class="text-lg font-bold text-white mb-3">إضافة صديق</h3>
-                <div class="flex gap-2">
-                    <input type="text" id="friend-search-input" placeholder="اسم المستخدم أو البريد" class="flex-1 px-4 py-3 rounded-lg focus:outline-none transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
-                    <button onclick="searchFriend()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">بحث</button>
-                </div>
-                <div id="friend-search-results" class="mt-3 space-y-2"></div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex gap-2 mb-4">
-                <button onclick="switchFriendsTab('list')" id="friends-tab-list" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">قائمتي</button>
-                <button onclick="switchFriendsTab('requests')" id="friends-tab-requests" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">الطلبات</button>
-            </div>
-
-            <!-- Friends List -->
-            <div id="friends-list">
-                <div id="friends-container" class="space-y-3"></div>
-            </div>
-
-            <!-- Friend Requests -->
-            <div id="friend-requests" style="display: none;">
-                <div id="requests-container" class="space-y-3"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== PAGE: ROOMS ============================ -->
-    <!-- ============================================================ -->
-    <div id="page-rooms" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الغرف الأونلاين</h1>
-            </div>
-
-            <!-- Create Room -->
-            <button onclick="createRoom()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #00ff88, #00d4ff);">
-                <i data-lucide="plus" class="w-6 h-6" style="color: var(--bg-color);"></i>
-                <span style="color: var(--bg-color);">إنشاء غرفة جديدة</span>
-            </button>
-
-            <!-- Join Room -->
-            <div class="glass-card rounded-xl p-4 mb-6">
-                <h3 class="text-lg font-bold text-white mb-3">الانضمام إلى غرفة</h3>
-                <div class="flex gap-2">
-                    <input type="text" id="room-code-input" placeholder="كود الغرفة (6 أحرف)" maxlength="6" class="flex-1 px-4 py-3 rounded-lg focus:outline-none uppercase transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary); text-align: center;">
-                    <button onclick="joinRoom()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">دخول</button>
-                </div>
-            </div>
-
-            <!-- Current Rooms -->
-            <h3 class="text-lg font-bold text-white mb-3">الغرف المفتوحة</h3>
-            <div id="active-rooms-container" class="space-y-3"></div>
-
-            <!-- Current Room (when inside) -->
-            <div id="current-room-container" style="display: none;" class="glass-card rounded-xl p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-white">الغرفة: <span id="room-display-code">XXXXXX</span></h3>
-                    <button onclick="leaveRoom()" class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(255,51,102,0.2); color: var(--accent-secondary); border: 1px solid var(--accent-secondary);">مغادرة</button>
-                </div>
-                <div id="room-players" class="space-y-2 mb-4"></div>
-                <button onclick="startOnlineGame()" id="start-game-btn" class="w-full py-3 rounded-xl font-bold neon-btn" style="display: none;">بدء المباراة</button>
-                <div id="room-chat" class="mt-4">
-                    <div id="chat-messages" class="h-40 overflow-y-auto mb-3 p-3 rounded-lg" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);"></div>
-                    <div class="flex gap-2">
-                        <input type="text" id="chat-input" placeholder="اكتب رسالة..." class="flex-1 px-4 py-2 rounded-lg focus:outline-none" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
-                        <button onclick="sendChatMessage()" class="px-4 py-2 rounded-lg font-bold" style="background: var(--accent-color); color: var(--bg-color);">إرسال</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== PAGE: LEADERBOARD ====================== -->
-    <!-- ============================================================ -->
-    <div id="page-leaderboard" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">لوحة المتصدرين</h1>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex gap-2 mb-4">
-                <button onclick="switchLeaderboardTab('xp')" id="lb-tab-xp" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">XP</button>
-                <button onclick="switchLeaderboardTab('ranked')" id="lb-tab-ranked" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">تنافسي</button>
-                <button onclick="switchLeaderboardTab('wins')" id="lb-tab-wins" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">انتصارات</button>
-            </div>
-
-            <!-- Leaderboard List -->
-            <div id="leaderboard-container" class="space-y-2">
-                <div class="text-center py-8" style="color: var(--text-secondary);">جاري التحميل...</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== PAGE: RANKED =========================== -->
-    <!-- ============================================================ -->
-    <div id="page-ranked" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">المباريات التنافسية</h1>
-            </div>
-
-            <!-- Rank Info -->
-            <div class="glass-card rounded-xl p-6 mb-6 text-center">
-                <div class="text-4xl font-display font-bold mb-2" style="color: #ffd700;" id="ranked-rank-display">Unranked</div>
-                <div class="flex items-center justify-center gap-4">
-                    <div>
-                        <div class="text-2xl font-bold" style="color: #ff6b35;" id="ranked-points-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">النقاط</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold" style="color: #00ff88;" id="ranked-wins-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">فوز</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold" style="color: var(--accent-secondary);" id="ranked-losses-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">خسارة</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Find Match -->
-            <button onclick="findRankedMatch()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #ff6b35, #ff3366);">
-                <i data-lucide="sword" class="w-6 h-6" style="color: white;"></i>
-                <span style="color: white;">البحث عن مباراة تنافسية</span>
-            </button>
-
-            <div class="glass-card rounded-xl p-4">
-                <h3 class="text-lg font-bold text-white mb-3">نظام النقاط التنافسية</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center gap-2" style="color: #00ff88;">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        <span>الفوز: +15 نقطة</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: var(--accent-secondary);">
-                        <i data-lucide="x-circle" class="w-4 h-4"></i>
-                        <span>الخسارة: -5 نقاط</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: #ffd700;">
-                        <i data-lucide="minus-circle" class="w-4 h-4"></i>
-                        <span>التعادل: +3 نقاط</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: var(--text-secondary);">
-                        <i data-lucide="info" class="w-4 h-4"></i>
-                        <span>سلسلة انتصارات: نقاط إضافية</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== باقي الصفحات (نفس الكود الأصلي) ======== -->
+    <!-- ==================== باقي الصفحات ========================== -->
     <!-- ============================================================ -->
 
     <!-- PROFILE PAGE -->
@@ -2539,7 +2358,6 @@
                 <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الملف الشخصي</h1>
             </div>
 
-            <!-- Profile Info with Frame -->
             <div class="glass-card rounded-2xl p-6 mb-6 text-center">
                 <div class="relative inline-block mb-4">
                     <div id="profileFrameContainer" class="rounded-full p-1">
@@ -2555,7 +2373,7 @@
 
                 <div class="flex items-center justify-center gap-2 mb-2">
                     <span id="profile-rank" class="px-3 py-1 rounded-full font-bold" style="background: var(--accent-color); color: var(--bg-color);">Rookie</span>
-                    <span id="profile-online-status" class="text-xs px-2 py-1 rounded-full" style="background: #00ff88; color: #000;">🟢 متصل</span>
+                    <span id="profile-online-status" class="text-xs px-2 py-1 rounded-full" style="background: #ff3366; color: #fff;">🔴 غير متصل</span>
                 </div>
 
                 <div class="flex items-center justify-center gap-2">
@@ -2568,7 +2386,6 @@
                 </div>
             </div>
 
-            <!-- Daily Streak -->
             <div class="glass-card rounded-xl p-4 mb-6">
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
                     <i data-lucide="flame" class="w-5 h-5" style="color: #ff6b35;"></i>
@@ -2586,7 +2403,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="glass-card rounded-xl p-4 mb-6">
                 <h3 class="text-lg font-bold text-white mb-4">الإحصائيات</h3>
                 <div class="grid grid-cols-2 gap-4">
@@ -2617,7 +2433,6 @@
                 </div>
             </div>
 
-            <!-- Division Stats -->
             <div class="glass-card rounded-xl p-4 mb-6">
                 <h3 class="text-lg font-bold text-white mb-4">تقدم الديفيجن</h3>
                 <div class="flex items-center justify-between mb-3">
@@ -2634,7 +2449,6 @@
                 </div>
             </div>
 
-            <!-- Achievements -->
             <div class="glass-card rounded-xl p-4">
                 <h3 class="text-lg font-bold text-white mb-4">الإنجازات</h3>
                 <div id="profile-achievements" class="space-y-3"></div>
@@ -2643,7 +2457,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- ==================== DIVISION PAGE (نفس الكود) ============= -->
+    <!-- ==================== DIVISION PAGE ========================== -->
     <!-- ============================================================ -->
     <div id="page-division" class="page flex-col items-center px-4 py-8">
         <div class="w-full max-w-lg relative z-10">
@@ -2936,6 +2750,171 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ==================== FRIENDS PAGE =========================== -->
+    <!-- ============================================================ -->
+    <div id="page-friends" class="page flex-col items-center px-4 py-8">
+        <div class="w-full max-w-lg relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
+                </button>
+                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الأصدقاء</h1>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 mb-6">
+                <h3 class="text-lg font-bold text-white mb-3">إضافة صديق</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="friend-search-input" placeholder="اسم المستخدم أو البريد" class="flex-1 px-4 py-3 rounded-lg focus:outline-none transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
+                    <button onclick="searchFriend()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">بحث</button>
+                </div>
+                <div id="friend-search-results" class="mt-3 space-y-2"></div>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button onclick="switchFriendsTab('list')" id="friends-tab-list" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">قائمتي</button>
+                <button onclick="switchFriendsTab('requests')" id="friends-tab-requests" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">الطلبات</button>
+            </div>
+
+            <div id="friends-list">
+                <div id="friends-container" class="space-y-3"></div>
+            </div>
+
+            <div id="friend-requests" style="display: none;">
+                <div id="requests-container" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ==================== ROOMS PAGE ============================= -->
+    <!-- ============================================================ -->
+    <div id="page-rooms" class="page flex-col items-center px-4 py-8">
+        <div class="w-full max-w-lg relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
+                </button>
+                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الغرف الأونلاين</h1>
+            </div>
+
+            <button onclick="createRoom()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #00ff88, #00d4ff);">
+                <i data-lucide="plus" class="w-6 h-6" style="color: var(--bg-color);"></i>
+                <span style="color: var(--bg-color);">إنشاء غرفة جديدة</span>
+            </button>
+
+            <div class="glass-card rounded-xl p-4 mb-6">
+                <h3 class="text-lg font-bold text-white mb-3">الانضمام إلى غرفة</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="room-code-input" placeholder="كود الغرفة (6 أحرف)" maxlength="6" class="flex-1 px-4 py-3 rounded-lg focus:outline-none uppercase transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary); text-align: center;">
+                    <button onclick="joinRoom()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">دخول</button>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold text-white mb-3">الغرف المفتوحة</h3>
+            <div id="active-rooms-container" class="space-y-3"></div>
+
+            <div id="current-room-container" style="display: none;" class="glass-card rounded-xl p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white">الغرفة: <span id="room-display-code">XXXXXX</span></h3>
+                    <button onclick="leaveRoom()" class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(255,51,102,0.2); color: var(--accent-secondary); border: 1px solid var(--accent-secondary);">مغادرة</button>
+                </div>
+                <div id="room-players" class="space-y-2 mb-4"></div>
+                <button onclick="startOnlineGame()" id="start-game-btn" class="w-full py-3 rounded-xl font-bold neon-btn" style="display: none;">بدء المباراة</button>
+                <div id="room-chat" class="mt-4">
+                    <div id="chat-messages" class="h-40 overflow-y-auto mb-3 p-3 rounded-lg" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);"></div>
+                    <div class="flex gap-2">
+                        <input type="text" id="chat-input" placeholder="اكتب رسالة..." class="flex-1 px-4 py-2 rounded-lg focus:outline-none" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
+                        <button onclick="sendChatMessage()" class="px-4 py-2 rounded-lg font-bold" style="background: var(--accent-color); color: var(--bg-color);">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ==================== LEADERBOARD PAGE ======================= -->
+    <!-- ============================================================ -->
+    <div id="page-leaderboard" class="page flex-col items-center px-4 py-8">
+        <div class="w-full max-w-lg relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
+                </button>
+                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">لوحة المتصدرين</h1>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button onclick="switchLeaderboardTab('xp')" id="lb-tab-xp" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">XP</button>
+                <button onclick="switchLeaderboardTab('ranked')" id="lb-tab-ranked" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">تنافسي</button>
+                <button onclick="switchLeaderboardTab('wins')" id="lb-tab-wins" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">انتصارات</button>
+            </div>
+
+            <div id="leaderboard-container" class="space-y-2">
+                <div class="text-center py-8" style="color: var(--text-secondary);">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ==================== RANKED PAGE ============================ -->
+    <!-- ============================================================ -->
+    <div id="page-ranked" class="page flex-col items-center px-4 py-8">
+        <div class="w-full max-w-lg relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
+                </button>
+                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">المباريات التنافسية</h1>
+            </div>
+
+            <div class="glass-card rounded-xl p-6 mb-6 text-center">
+                <div class="text-4xl font-display font-bold mb-2" style="color: #ffd700;" id="ranked-rank-display">Unranked</div>
+                <div class="flex items-center justify-center gap-4">
+                    <div>
+                        <div class="text-2xl font-bold" style="color: #ff6b35;" id="ranked-points-display">0</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">النقاط</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" style="color: #00ff88;" id="ranked-wins-display">0</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">فوز</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" style="color: var(--accent-secondary);" id="ranked-losses-display">0</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">خسارة</div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="findRankedMatch()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #ff6b35, #ff3366);">
+                <i data-lucide="sword" class="w-6 h-6" style="color: white;"></i>
+                <span style="color: white;">البحث عن مباراة تنافسية</span>
+            </button>
+
+            <div class="glass-card rounded-xl p-4">
+                <h3 class="text-lg font-bold text-white mb-3">نظام النقاط التنافسية</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center gap-2" style="color: #00ff88;">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        <span>الفوز: +15 نقطة</span>
+                    </li>
+                    <li class="flex items-center gap-2" style="color: var(--accent-secondary);">
+                        <i data-lucide="x-circle" class="w-4 h-4"></i>
+                        <span>الخسارة: -5 نقاط</span>
+                    </li>
+                    <li class="flex items-center gap-2" style="color: #ffd700;">
+                        <i data-lucide="minus-circle" class="w-4 h-4"></i>
+                        <span>التعادل: +3 نقاط</span>
+                    </li>
+                    <li class="flex items-center gap-2" style="color: var(--text-secondary);">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        <span>سلسلة انتصارات: نقاط إضافية</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- ==================== باقي الصفحات ========================== -->
     <!-- ============================================================ -->
     <div id="page-about" class="page flex-col items-center px-4 py-8">...</div>
@@ -3040,7 +3019,7 @@
         } from 'firebase-storage';
 
         // ============================================================
-        // 🔑 FIREBASE CONFIG - استبدل ببياناتك من Firebase Console
+        // 🔑 FIREBASE CONFIG
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyA2e4_W1zBCE0vIcCuLN5Z7ClPeDrKStmQ",
@@ -3058,7 +3037,7 @@
         const storage = getStorage(app);
 
         // ============================================================
-        // 📦 EXPORT للاستخدام العام
+        // 📦 EXPORT
         // ============================================================
         window.auth = auth;
         window.db = db;
@@ -3189,26 +3168,6 @@
             }
         };
 
-        window.forgotPassword = async () => {
-            const email = document.getElementById('auth-email').value.trim();
-            const errorEl = document.getElementById('auth-error');
-            
-            if (!email) {
-                errorEl.textContent = 'الرجاء إدخال البريد الإلكتروني';
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            try {
-                await sendPasswordResetEmail(auth, email);
-                showNotification('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك', 'success');
-                errorEl.style.display = 'none';
-            } catch (error) {
-                errorEl.textContent = getAuthErrorMessage(error.code);
-                errorEl.style.display = 'block';
-            }
-        };
-
         window.logoutUser = async () => {
             try {
                 await signOut(auth);
@@ -3216,7 +3175,6 @@
                     await update(ref(rtdb, `status/${currentUser.uid}`), { online: false });
                 }
                 showNotification('تم تسجيل الخروج', 'info');
-                toggleSettingsPanel();
                 updateAuthUI();
             } catch (error) {
                 console.error('Logout error:', error);
@@ -3245,7 +3203,6 @@
             errorEl.style.display = 'none';
             
             if (currentUser) {
-                // تسجيل الخروج
                 logoutUser();
                 return;
             }
@@ -3264,6 +3221,16 @@
             const btn = document.getElementById('auth-header-btn');
             const username = document.getElementById('home-username');
             const status = document.getElementById('home-online-status');
+            const rankedPoints = document.getElementById('home-ranked-points');
+            const xp = document.getElementById('home-xp');
+            
+            // تحديث الأيقونات 🔒
+            const locks = {
+                friends: document.getElementById('lock-friends'),
+                rooms: document.getElementById('lock-rooms'),
+                leaderboard: document.getElementById('lock-leaderboard'),
+                ranked: document.getElementById('lock-ranked')
+            };
             
             if (currentUser && currentUserData) {
                 btn.innerHTML = '<i data-lucide="log-out" class="w-5 h-5" style="color: var(--accent-secondary);"></i>';
@@ -3273,6 +3240,13 @@
                     status.style.background = '#00ff88';
                     status.style.color = '#000';
                 }
+                if (xp) xp.textContent = `${currentUserData.xp || 0} XP`;
+                if (rankedPoints) rankedPoints.textContent = currentUserData.rankedPoints || 0;
+                
+                // إزالة 🔒 من جميع الأزرار
+                Object.values(locks).forEach(lock => {
+                    if (lock) lock.style.display = 'none';
+                });
             } else {
                 btn.innerHTML = '<i data-lucide="log-in" class="w-5 h-5" style="color: var(--accent-color);"></i>';
                 if (username) username.textContent = state.profileName || 'Player';
@@ -3281,17 +3255,14 @@
                     status.style.background = '#ff3366';
                     status.style.color = '#fff';
                 }
+                
+                // إظهار 🔒
+                Object.values(locks).forEach(lock => {
+                    if (lock) lock.style.display = 'inline';
+                });
             }
             lucide.createIcons();
         }
-
-        window.requireAuthThenNavigate = (pageId) => {
-            if (!currentUser) {
-                toggleAuthModal();
-                return;
-            }
-            navigateTo(pageId);
-        };
 
         // ============================================================
         // 👤 USER PROFILE FUNCTIONS
@@ -3383,8 +3354,6 @@
                 currentUser = null;
                 currentUserData = null;
                 updateAuthUI();
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById('page-home').classList.add('active');
             }
         });
 
@@ -4157,102 +4126,333 @@
         }
 
         // ============================================================
-        // ⚔️ RANKED MATCHES
+        // ⚔️ RANKED MATCHES (مباريات تنافسية حقيقية)
         // ============================================================
-        window.findRankedMatch = () => {
+        let rankedMatchmaking = false;
+
+        window.findRankedMatch = async () => {
             if (!currentUser) {
                 showNotification('يجب تسجيل الدخول أولاً', 'error');
                 return;
             }
             
-            showNotification('جاري البحث عن مباراة تنافسية...', 'info');
-            
-            setTimeout(() => {
-                startGame('computer', 'hard');
-                state.gameMode = 'ranked';
-                showNotification('تم العثور على خصم!', 'success');
-            }, 2000);
-        };
-
-        const originalHandleGameEnd = window.handleGameEnd;
-        window.handleGameEnd = function(result) {
-            if (state.gameMode === 'ranked' && currentUser) {
-                const playerSymbol = state.playAs;
-                let pointsChange = 0;
-                
-                if (result.winner === playerSymbol) {
-                    pointsChange = 15;
-                    state.rankedPoints = (state.rankedPoints || 0) + 15;
-                    state.rankedWins = (state.rankedWins || 0) + 1;
-                    showNotification(`فوز تنافسي! +15 نقطة`, 'success');
-                } else if (result.winner === 'draw') {
-                    pointsChange = 3;
-                    state.rankedPoints = (state.rankedPoints || 0) + 3;
-                    state.rankedDraws = (state.rankedDraws || 0) + 1;
-                    showNotification(`تعادل تنافسي! +3 نقاط`, 'success');
-                } else {
-                    pointsChange = -5;
-                    state.rankedPoints = Math.max(0, (state.rankedPoints || 0) - 5);
-                    state.rankedLosses = (state.rankedLosses || 0) + 1;
-                    showNotification(`خسارة تنافسية! -5 نقاط`, 'error');
-                }
-                
-                updateUser(currentUser.uid, {
-                    rankedPoints: state.rankedPoints,
-                    rankedWins: state.rankedWins,
-                    rankedLosses: state.rankedLosses,
-                    rankedDraws: state.rankedDraws
-                });
+            if (rankedMatchmaking) {
+                showNotification('جاري البحث بالفعل...', 'info');
+                return;
             }
             
-            if (originalHandleGameEnd) {
-                originalHandleGameEnd(result);
-            }
-        };
-
-        // ============================================================
-        // 🎁 SEND GIFTS
-        // ============================================================
-        window.sendGift = async (friendId, type, amount) => {
-            if (!currentUser) return;
+            rankedMatchmaking = true;
+            showNotification('جاري البحث عن خصم تنافسي...', 'info');
             
             try {
-                const friendDoc = await getDoc(doc(db, 'users', friendId));
-                if (!friendDoc.exists()) {
-                    showNotification('الصديق غير موجود', 'error');
-                    return;
-                }
+                // البحث عن لاعب آخر في وضع البحث التنافسي
+                const rankedRef = ref(rtdb, 'ranked_queue');
+                const snapshot = await get(rankedRef);
                 
-                const friendData = friendDoc.data();
-                let message = '';
+                let opponentId = null;
+                let opponentData = null;
                 
-                if (type === 'xp') {
-                    await updateDoc(doc(db, 'users', friendId), {
-                        xp: (friendData.xp || 0) + amount
-                    });
-                    await updateDoc(doc(db, 'users', currentUser.uid), {
-                        xp: (currentUserData.xp || 0) - amount
-                    });
-                    state.xp -= amount;
-                    message = `تم إرسال ${amount} XP إلى ${friendData.username}`;
-                } else if (type === 'skin') {
-                    const unlocked = friendData.unlockedSkins || [];
-                    if (!unlocked.includes(amount)) {
-                        await updateDoc(doc(db, 'users', friendId), {
-                            unlockedSkins: arrayUnion(amount)
-                        });
-                        message = `تم إرسال السكن إلى ${friendData.username}`;
-                    } else {
-                        showNotification('الصديق يمتلك هذا السكن بالفعل', 'info');
-                        return;
+                if (snapshot.exists()) {
+                    const queue = snapshot.val();
+                    // البحث عن لاعب آخر غير نفسه
+                    for (const [key, data] of Object.entries(queue)) {
+                        if (data.uid !== currentUser.uid && data.status === 'searching') {
+                            opponentId = key;
+                            opponentData = data;
+                            break;
+                        }
                     }
                 }
                 
-                showNotification(message, 'success');
+                if (opponentId && opponentData) {
+                    // تم العثور على خصم
+                    await remove(ref(rtdb, `ranked_queue/${opponentId}`));
+                    await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
+                    
+                    rankedMatchmaking = false;
+                    
+                    // إنشاء غرفة للمباراة التنافسية
+                    const roomId = generateRoomId();
+                    const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
+                    
+                    await set(roomRef, {
+                        player1: {
+                            uid: currentUser.uid,
+                            name: currentUserData.username || 'Player',
+                            symbol: 'X'
+                        },
+                        player2: {
+                            uid: opponentData.uid,
+                            name: opponentData.username || 'Player',
+                            symbol: 'O'
+                        },
+                        board: Array(9).fill(null),
+                        currentTurn: 'X',
+                        winner: null,
+                        winningLine: null,
+                        status: 'playing',
+                        createdAt: rtdbTimestamp(),
+                        isRanked: true
+                    });
+                    
+                    // تحديث حالة المستخدم في المباراة
+                    await update(ref(rtdb, `status/${currentUser.uid}`), { 
+                        inRankedMatch: roomId,
+                        rankedMatchStatus: 'playing'
+                    });
+                    
+                    showNotification(`تم العثور على خصم! ${opponentData.username}`, 'success');
+                    
+                    // الانتقال إلى صفحة اللعب
+                    navigateTo('game');
+                    document.getElementById('gameModeIndicator').innerHTML = 
+                        '<span style="color: #ff6b35;">⚔️ مباراة تنافسية ضد ' + opponentData.username + '</span>';
+                    
+                    // بدء الاستماع للمباراة التنافسية
+                    listenToRankedMatch(roomId);
+                    
+                } else {
+                    // لا يوجد خصم، نضيف المستخدم لقائمة الانتظار
+                    await set(ref(rtdb, `ranked_queue/${currentUser.uid}`), {
+                        uid: currentUser.uid,
+                        username: currentUserData.username || 'Player',
+                        status: 'searching',
+                        timestamp: Date.now()
+                    });
+                    
+                    showNotification('جاري البحث عن خصم... انتظر قليلاً', 'info');
+                    
+                    // الاستماع للتغييرات في قائمة الانتظار
+                    const queueRef = ref(rtdb, 'ranked_queue');
+                    const unsubscribe = onValue(queueRef, async (snap) => {
+                        if (!snap.exists()) return;
+                        
+                        const queue = snap.val();
+                        let foundOpponent = null;
+                        
+                        for (const [key, data] of Object.entries(queue)) {
+                            if (data.uid !== currentUser.uid && data.status === 'searching') {
+                                foundOpponent = { key, data };
+                                break;
+                            }
+                        }
+                        
+                        if (foundOpponent) {
+                            unsubscribe();
+                            await remove(ref(rtdb, `ranked_queue/${foundOpponent.key}`));
+                            await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
+                            rankedMatchmaking = false;
+                            
+                            // إنشاء غرفة المباراة
+                            const roomId = generateRoomId();
+                            const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
+                            
+                            await set(roomRef, {
+                                player1: {
+                                    uid: currentUser.uid,
+                                    name: currentUserData.username || 'Player',
+                                    symbol: 'X'
+                                },
+                                player2: {
+                                    uid: foundOpponent.data.uid,
+                                    name: foundOpponent.data.username || 'Player',
+                                    symbol: 'O'
+                                },
+                                board: Array(9).fill(null),
+                                currentTurn: 'X',
+                                winner: null,
+                                winningLine: null,
+                                status: 'playing',
+                                createdAt: rtdbTimestamp(),
+                                isRanked: true
+                            });
+                            
+                            await update(ref(rtdb, `status/${currentUser.uid}`), { 
+                                inRankedMatch: roomId,
+                                rankedMatchStatus: 'playing'
+                            });
+                            
+                            showNotification(`تم العثور على خصم! ${foundOpponent.data.username}`, 'success');
+                            
+                            navigateTo('game');
+                            document.getElementById('gameModeIndicator').innerHTML = 
+                                '<span style="color: #ff6b35;">⚔️ مباراة تنافسية ضد ' + foundOpponent.data.username + '</span>';
+                            
+                            listenToRankedMatch(roomId);
+                        }
+                    });
+                    
+                    // مهلة 30 ثانية
+                    setTimeout(() => {
+                        if (rankedMatchmaking) {
+                            unsubscribe();
+                            remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
+                            rankedMatchmaking = false;
+                            showNotification('لم يتم العثور على خصم، حاول مرة أخرى', 'error');
+                        }
+                    }, 30000);
+                }
             } catch (error) {
-                console.error('Send gift error:', error);
+                console.error('Ranked matchmaking error:', error);
+                rankedMatchmaking = false;
+                showNotification('حدث خطأ في البحث عن خصم', 'error');
             }
         };
+
+        // الاستماع للمباراة التنافسية
+        function listenToRankedMatch(roomId) {
+            const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
+            
+            const unsubscribe = onValue(roomRef, (snapshot) => {
+                if (!snapshot.exists()) {
+                    showNotification('انتهت المباراة التنافسية', 'info');
+                    return;
+                }
+                
+                const roomData = snapshot.val();
+                
+                // تحديث لوحة اللعب
+                const board = roomData.board;
+                const currentTurn = roomData.currentTurn;
+                
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.getElementById(`cell-${i}`);
+                    if (cell) {
+                        if (board[i]) {
+                            cell.innerHTML = `<span class="animate-pop-in">${board[i]}</span>`;
+                            cell.classList.add('disabled');
+                        } else {
+                            cell.innerHTML = '';
+                            cell.classList.remove('disabled');
+                        }
+                    }
+                }
+                
+                const statusEl = document.getElementById('game-status');
+                if (statusEl && !roomData.winner) {
+                    const color = currentTurn === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
+                    statusEl.innerHTML = `الدور: <span style="color: ${color};">${currentTurn}</span>`;
+                }
+                
+                // إذا انتهت المباراة
+                if (roomData.winner || roomData.status === 'finished') {
+                    handleRankedGameEnd(roomData, roomId);
+                    unsubscribe();
+                }
+            });
+        }
+
+        // عمل حركة في المباراة التنافسية
+        window.makeRankedMove = async (index) => {
+            if (!currentUser || !currentRoomId) return;
+            
+            // نستخدم نفس الـ roomId للمباراة التنافسية
+            const roomRef = ref(rtdb, `ranked_matches/${currentRoomId}`);
+            const snapshot = await get(roomRef);
+            
+            if (!snapshot.exists()) return;
+            
+            const roomData = snapshot.val();
+            if (roomData.status !== 'playing') return;
+            if (roomData.board[index]) return;
+            if (roomData.winner) return;
+            
+            const player = roomData.player1.uid === currentUser.uid ? roomData.player1 : roomData.player2;
+            if (!player) return;
+            if (roomData.currentTurn !== player.symbol) {
+                showNotification('ليس دورك الآن', 'info');
+                return;
+            }
+            
+            const board = [...roomData.board];
+            board[index] = player.symbol;
+            
+            const updates = { board: board };
+            const result = checkWinner(board);
+            
+            if (result) {
+                updates.winner = result.winner;
+                updates.winningLine = result.line;
+                updates.status = 'finished';
+            } else {
+                updates.currentTurn = roomData.currentTurn === 'X' ? 'O' : 'X';
+            }
+            
+            await update(roomRef, updates);
+            
+            state.moveHistory.push({
+                player: player.symbol,
+                position: index,
+                board: board
+            });
+        };
+
+        // معالجة نهاية المباراة التنافسية
+        function handleRankedGameEnd(roomData, roomId) {
+            const statusEl = document.getElementById('game-status');
+            
+            if (roomData.winner === 'draw') {
+                statusEl.innerHTML = '<span style="color: var(--text-secondary);">تعادل تنافسي!</span>';
+                showNotification('تعادل تنافسي! +3 نقاط', 'success');
+                
+                // تحديث نقاط التنافسية
+                state.rankedPoints = (state.rankedPoints || 0) + 3;
+                state.rankedDraws = (state.rankedDraws || 0) + 1;
+                
+                updateUser(currentUser.uid, {
+                    rankedPoints: state.rankedPoints,
+                    rankedDraws: state.rankedDraws
+                });
+                
+            } else if (roomData.winner) {
+                let winnerName = '';
+                let isWinner = false;
+                
+                if (roomData.player1.symbol === roomData.winner) {
+                    winnerName = roomData.player1.name;
+                    isWinner = roomData.player1.uid === currentUser.uid;
+                } else {
+                    winnerName = roomData.player2.name;
+                    isWinner = roomData.player2.uid === currentUser.uid;
+                }
+                
+                const color = roomData.winner === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
+                statusEl.innerHTML = `<span style="color: ${color};">${winnerName} فاز! 🏆</span>`;
+                
+                if (isWinner) {
+                    showNotification(`فوز تنافسي! +15 نقطة`, 'success');
+                    state.rankedPoints = (state.rankedPoints || 0) + 15;
+                    state.rankedWins = (state.rankedWins || 0) + 1;
+                    state.xp += 30;
+                    
+                    updateUser(currentUser.uid, {
+                        rankedPoints: state.rankedPoints,
+                        rankedWins: state.rankedWins,
+                        xp: state.xp
+                    });
+                } else {
+                    showNotification(`خسارة تنافسية! -5 نقاط`, 'error');
+                    state.rankedPoints = Math.max(0, (state.rankedPoints || 0) - 5);
+                    state.rankedLosses = (state.rankedLosses || 0) + 1;
+                    
+                    updateUser(currentUser.uid, {
+                        rankedPoints: state.rankedPoints,
+                        rankedLosses: state.rankedLosses
+                    });
+                }
+            }
+            
+            document.getElementById('game-controls').style.opacity = '1';
+            
+            // حذف المباراة من قاعدة البيانات
+            setTimeout(async () => {
+                await remove(ref(rtdb, `ranked_matches/${roomId}`));
+                await update(ref(rtdb, `status/${currentUser.uid}`), { 
+                    inRankedMatch: null,
+                    rankedMatchStatus: null
+                });
+            }, 5000);
+        }
 
         // ============================================================
         // 🏠 إعادة توجيه الصفحات المكررة
@@ -4294,9 +4494,12 @@
         window.syncUserDataToState = syncUserDataToState;
         window.getAuthErrorMessage = getAuthErrorMessage;
         window.updateAuthUI = updateAuthUI;
-        window.requireAuthThenNavigate = requireAuthThenNavigate;
         window.toggleAuthModal = toggleAuthModal;
         window.closeAuthModal = closeAuthModal;
+        window.makeRankedMove = makeRankedMove;
+        window.findRankedMatch = findRankedMatch;
+        window.listenToRankedMatch = listenToRankedMatch;
+        window.handleRankedGameEnd = handleRankedGameEnd;
 
         console.log('🚀 XO Arena v6.0 - Online Edition Loaded!');
         console.log('🔥 Firebase connected successfully!');
@@ -4304,16 +4507,13 @@
     </script>
 
     <!-- ============================================================ -->
-    <!-- ==================== النص البرمجي القديم (معدل) ============ -->
+    <!-- ==================== النص البرمجي القديم ==================== -->
     <!-- ============================================================ -->
     <script>
         // ============================================================
-        // 🎯 هذا هو الكود القديم للعبة مع تعديلات بسيطة للتوافق
+        // 🎯 الكود القديم للعبة
         // ============================================================
 
-        // ============================================================
-        // 📦 DATA
-        // ============================================================
         const SONG_URLS = [
             'https://files.catbox.moe/ltx4q6.mp3',
             'https://files.catbox.moe/2v21ol.mp3',
@@ -4645,7 +4845,7 @@
         }
 
         // ============================================================
-        // 🎯 GAME FUNCTIONS (نفس الكود الأصلي)
+        // 🎯 GAME FUNCTIONS
         // ============================================================
         function startGame(mode, difficulty = 'beginner') {
             state.gameMode = mode;
@@ -4709,6 +4909,13 @@
         function handleMove(index) {
             if (state.board[index] || state.winner || state.isComputerTurn) return;
             
+            // إذا كانت مباراة تنافسية أونلاين
+            if (state.gameMode === 'ranked' && window.makeRankedMove) {
+                window.makeRankedMove(index);
+                return;
+            }
+            
+            // إذا كانت مباراة أونلاين عادية
             if (state.gameMode === 'online' && window.makeOnlineMove) {
                 window.makeOnlineMove(index);
                 return;
@@ -4716,13 +4923,13 @@
             
             const currentPlayer = state.isXNext ? 'X' : 'O';
             
-            if (state.gameMode !== 'friend' && state.gameMode !== 'ranked') {
+            if (state.gameMode !== 'friend') {
                 if (currentPlayer !== state.playAs) return;
             }
             
             makeMove(index, currentPlayer);
             
-            if (!state.winner && state.gameMode !== 'friend' && state.gameMode !== 'ranked') {
+            if (!state.winner && state.gameMode !== 'friend') {
                 state.isComputerTurn = true;
                 const delay = 500 + Math.random() * 500;
                 setTimeout(() => {
@@ -4850,6 +5057,8 @@
                     playSound('draw');
                 }
             } else if (state.gameMode === 'ranked') {
+                // معالجة المباريات التنافسية موجودة في الكود الجديد
+                // لكن نضيف معالجة بسيطة هنا للتوافق المحلي
                 if (result.winner === playerSymbol) {
                     state.stats.wins++;
                     state.currentWinStreak++;
@@ -4922,7 +5131,7 @@
         }
 
         // ============================================================
-        // 🔧 باقي الدوال (نفس الكود الأصلي)
+        // 🔧 باقي الدوال
         // ============================================================
         function updateGameStatus() {
             const statusEl = document.getElementById('game-status');
@@ -4956,7 +5165,7 @@
         }
 
         // ============================================================
-        // 🧠 AI FUNCTIONS (نفس الكود الأصلي)
+        // 🧠 AI FUNCTIONS
         // ============================================================
         function updateAdaptiveDifficulty(playerWon) {
             if (playerWon) {
@@ -5351,15 +5560,15 @@
             updateWinStreak();
             updateAuthUI();
             
-            if (document.getElementById('page-friends').classList.contains('active')) {
-                if (document.getElementById('friends-list').style.display !== 'none') {
+            if (document.getElementById('page-friends')?.classList?.contains('active')) {
+                if (document.getElementById('friends-list')?.style.display !== 'none') {
                     loadFriends();
                 } else {
                     loadRequests();
                 }
             }
             
-            if (document.getElementById('page-leaderboard').classList.contains('active')) {
+            if (document.getElementById('page-leaderboard')?.classList?.contains('active')) {
                 loadLeaderboard(leaderboardTab || 'xp');
             }
         }
@@ -6000,13 +6209,6 @@
                 return;
             }
             
-            // إذا كانت صفحة أونلاين والمستخدم مش مسجل
-            const onlinePages = ['friends', 'rooms', 'leaderboard', 'ranked'];
-            if (onlinePages.includes(pageId) && !window.getCurrentUser()) {
-                toggleAuthModal();
-                return;
-            }
-            
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(`page-${pageId}`);
             if (target) {
@@ -6019,7 +6221,7 @@
             playSound('click');
             
             if (pageId === 'friends') {
-                if (document.getElementById('friends-list').style.display !== 'none') {
+                if (document.getElementById('friends-list')?.style.display !== 'none') {
                     loadFriends();
                 } else {
                     loadRequests();
@@ -6407,16 +6609,12 @@
         window.updateAuthUI = updateAuthUI;
         window.toggleAuthModal = toggleAuthModal;
         window.closeAuthModal = closeAuthModal;
-        window.requireAuthThenNavigate = requireAuthThenNavigate;
 
         // ============================================================
-        // 🚀 تنفيذ init بعد تحميل الصفحة
+        // 🚀 START
         // ============================================================
         window.onload = function() {
             setTimeout(() => {
-                if (document.getElementById('page-login') && document.getElementById('page-login').classList.contains('active')) {
-                    // قديمة، نتجاهل
-                }
                 init();
             }, 500);
         };
