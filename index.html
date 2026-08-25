@@ -1631,76 +1631,6 @@
             margin-top: 10px;
         }
 
-        .whats-new-modal {
-            max-width: 600px;
-            padding: 30px;
-        }
-
-        .whats-new-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 20px;
-            animation: glow-pulse 2s ease-in-out infinite;
-        }
-
-        .whats-new-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .whats-new-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            animation: slide-in-left 0.3s ease-out forwards;
-            opacity: 0;
-        }
-
-        .whats-new-item:nth-child(1) { animation-delay: 0.1s; }
-        .whats-new-item:nth-child(2) { animation-delay: 0.2s; }
-        .whats-new-item:nth-child(3) { animation-delay: 0.3s; }
-        .whats-new-item:nth-child(4) { animation-delay: 0.4s; }
-        .whats-new-item:nth-child(5) { animation-delay: 0.5s; }
-        .whats-new-item:nth-child(6) { animation-delay: 0.6s; }
-        .whats-new-item:nth-child(7) { animation-delay: 0.7s; }
-
-        .whats-new-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255,215,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .whats-new-icon i {
-            width: 30px;
-            height: 30px;
-            color: #ffd700;
-        }
-
-        .whats-new-text {
-            flex: 1;
-            font-size: 1.1rem;
-            color: var(--text-primary);
-        }
-
-        .whats-new-reward {
-            color: #ffd700;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
         .share-modal {
             max-width: 500px;
             padding: 30px;
@@ -1921,39 +1851,6 @@
         </div>
     </div>
 
-    <!-- What's New Modal -->
-    <div id="whats-new-modal-overlay" class="modal-overlay"></div>
-    <div id="whats-new-modal" class="modal-content whats-new-modal glass-card">
-        <div class="whats-new-title">🎉 ما الجديد؟ 🎉</div>
-        <ul class="whats-new-list">
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="check-circle"></i></div>
-                <div class="whats-new-text">إصلاح أخطاء نظام الذكاء الاصطناعي</div>
-            </li>
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="cpu"></i></div>
-                <div class="whats-new-text">إضافة طور ذكاء اصطناعي جديد (التكيفي)</div>
-            </li>
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="gamepad-2"></i></div>
-                <div class="whats-new-text">تغييرات في الجيم بلاي</div>
-            </li>
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="video"></i></div>
-                <div class="whats-new-text">إضافة ميزة VAR</div>
-            </li>
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="music"></i></div>
-                <div class="whats-new-text">إضافة المزيد من الأغاني</div>
-            </li>
-            <li class="whats-new-item">
-                <div class="whats-new-icon"><i data-lucide="gift"></i></div>
-                <div class="whats-new-text"><span class="whats-new-reward">تعويض 10,000 XP</span> بسبب الأخطاء السابقة</div>
-            </li>
-        </ul>
-        <button onclick="closeWhatsNew()" class="neon-btn w-full py-3 rounded-xl font-bold mt-4">حسناً</button>
-    </div>
-
     <!-- Background Effects -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute top-20 right-20 w-72 h-72 rounded-full blur-3xl opacity-20" style="background: var(--accent-color);"></div>
@@ -1982,6 +1879,22 @@
             <h2 class="text-2xl font-display font-bold" style="color: var(--accent-color);">القائمة</h2>
             <div class="settings-close" onclick="toggleSettingsPanel()">
                 <i data-lucide="x"></i>
+            </div>
+        </div>
+
+        <!-- ======== زر تسجيل الدخول/الخروج داخل الإعدادات ======== -->
+        <div class="settings-section">
+            <div class="settings-section-title">
+                <i data-lucide="user"></i>
+                <span>الحساب</span>
+            </div>
+            <button id="settings-auth-btn" onclick="handleSettingsAuth()" class="settings-menu-item">
+                <i id="settings-auth-icon" data-lucide="log-in" class="w-5 h-5"></i>
+                <span id="settings-auth-text">تسجيل الدخول</span>
+            </button>
+            <div id="settings-user-status" class="mt-2 text-sm flex items-center gap-2 px-3 py-2 rounded-lg" style="background: rgba(0,0,0,0.3);">
+                <span id="settings-status-dot" class="w-3 h-3 rounded-full inline-block" style="background: #ff3366;"></span>
+                <span id="settings-status-text" style="color: var(--text-secondary);">غير متصل</span>
             </div>
         </div>
 
@@ -2120,7 +2033,7 @@
     <!-- ============================================================ -->
     <!-- ==================== PAGE: HOME ============================= -->
     <!-- ============================================================ -->
-    <div id="page-home" class="page flex-col items-center px-4 py-8">
+    <div id="page-home" class="page active flex-col items-center px-4 py-8">
         <div class="w-full max-w-lg relative z-10">
             
             <!-- Profile Card with Auth Button -->
@@ -3221,50 +3134,6 @@
             document.getElementById('auth-error').style.display = 'none';
         };
 
-        function updateAuthUI() {
-            const btn = document.getElementById('auth-header-btn');
-            const username = document.getElementById('home-username');
-            const status = document.getElementById('home-online-status');
-            const rankedPoints = document.getElementById('home-ranked-points');
-            const xp = document.getElementById('home-xp');
-            
-            const locks = {
-                friends: document.getElementById('lock-friends'),
-                rooms: document.getElementById('lock-rooms'),
-                leaderboard: document.getElementById('lock-leaderboard'),
-                ranked: document.getElementById('lock-ranked')
-            };
-            
-            if (currentUser && currentUserData) {
-                btn.innerHTML = '<i data-lucide="log-out" class="w-5 h-5" style="color: var(--accent-secondary);"></i>';
-                if (username) username.textContent = currentUserData.username || 'Player';
-                if (status) {
-                    status.textContent = '🟢 متصل';
-                    status.style.background = '#00ff88';
-                    status.style.color = '#000';
-                }
-                if (xp) xp.textContent = `${currentUserData.xp || 0} XP`;
-                if (rankedPoints) rankedPoints.textContent = currentUserData.rankedPoints || 0;
-                
-                Object.values(locks).forEach(lock => {
-                    if (lock) lock.style.display = 'none';
-                });
-            } else {
-                btn.innerHTML = '<i data-lucide="log-in" class="w-5 h-5" style="color: var(--accent-color);"></i>';
-                if (username) username.textContent = state.profileName || 'Player';
-                if (status) {
-                    status.textContent = '🔴 غير متصل';
-                    status.style.background = '#ff3366';
-                    status.style.color = '#fff';
-                }
-                
-                Object.values(locks).forEach(lock => {
-                    if (lock) lock.style.display = 'inline';
-                });
-            }
-            lucide.createIcons();
-        }
-
         // ============================================================
         // 👤 USER PROFILE FUNCTIONS
         // ============================================================
@@ -3348,6 +3217,8 @@
                 currentUser = null;
                 currentUserData = null;
                 updateAuthUI();
+                // تأكد من أن الصفحة الرئيسية تظهر بعد تسجيل الخروج
+                navigateTo('home');
             }
         });
 
@@ -4431,29 +4302,6 @@
         }
 
         // ============================================================
-        // 🏠 إعادة توجيه الصفحات المكررة
-        // ============================================================
-        const pages = ['about', 'privacy', 'terms', 'guide', 'blog', 'article1', 'article2', 'article3'];
-        pages.forEach(page => {
-            const el = document.getElementById(`page-${page}`);
-            if (el && (el.innerHTML.trim() === '...' || el.innerHTML.trim() === '')) {
-                el.innerHTML = `
-                    <div class="w-full max-w-lg relative z-10">
-                        <div class="flex items-center gap-4 mb-6">
-                            <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                                <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                            </button>
-                            <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">${page.replace('article', 'مقال ')}</h1>
-                        </div>
-                        <div class="glass-card rounded-2xl p-6">
-                            <p style="color: var(--text-primary);">محتوى هذه الصفحة قيد التطوير...</p>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-
-        // ============================================================
         // 📦 EXPOSE FUNCTIONS TO GLOBAL
         // ============================================================
         window.loadFriends = loadFriends;
@@ -4475,7 +4323,7 @@
         window.listenToRankedMatch = listenToRankedMatch;
         window.handleRankedGameEnd = handleRankedGameEnd;
 
-        console.log('🚀 XO Arena v6.0 - Online Edition Loaded!');
+        console.log('🚀 XO Arena v7.0 - Online Edition Loaded!');
         console.log('🔥 Firebase v12.18.0 connected successfully!');
         console.log('✅ Google Authentication enabled');
 
@@ -4759,10 +4607,6 @@
             
             if (state.isBanned) {
                 showBannedModal();
-            }
-            
-            if (!state.hasSeenWhatsNew && state.xp > 0) {
-                setTimeout(() => showWhatsNew(), 2000);
             }
             
             updateAuthUI();
@@ -6324,19 +6168,8 @@
         }
 
         // ============================================================
-        // 🎉 WHAT'S NEW
+        // 🎉 WHAT'S NEW - تم إزالة هذا القسم بالكامل
         // ============================================================
-        function showWhatsNew() {
-            document.getElementById('whats-new-modal-overlay').classList.add('active');
-            document.getElementById('whats-new-modal').classList.add('active');
-            state.hasSeenWhatsNew = true;
-            saveState();
-        }
-
-        function closeWhatsNew() {
-            document.getElementById('whats-new-modal-overlay').classList.remove('active');
-            document.getElementById('whats-new-modal').classList.remove('active');
-        }
 
         // ============================================================
         // 🍪 COOKIES
@@ -6499,6 +6332,41 @@
         }
 
         // ============================================================
+        // دالة معالجة زر تسجيل الدخول/الخروج في الإعدادات
+        // ============================================================
+        window.handleSettingsAuth = function() {
+            if (window.getCurrentUser()) {
+                window.logoutUser();
+            } else {
+                window.toggleAuthModal();
+            }
+        };
+
+        // ============================================================
+        // تحديث واجهة المستخدم الخاصة بحالة الاتصال
+        // ============================================================
+        function updateAuthUI() {
+            const isLoggedIn = window.getCurrentUser() !== null;
+            const statusDot = document.getElementById('settings-status-dot');
+            const statusText = document.getElementById('settings-status-text');
+            const settingsIcon = document.getElementById('settings-auth-icon');
+            const settingsText = document.getElementById('settings-auth-text');
+            
+            if (isLoggedIn) {
+                if (statusDot) statusDot.style.background = '#00ff88';
+                if (statusText) statusText.textContent = 'متصل';
+                if (settingsIcon) settingsIcon.setAttribute('data-lucide', 'log-out');
+                if (settingsText) settingsText.textContent = 'تسجيل الخروج';
+            } else {
+                if (statusDot) statusDot.style.background = '#ff3366';
+                if (statusText) statusText.textContent = 'غير متصل';
+                if (settingsIcon) settingsIcon.setAttribute('data-lucide', 'log-in');
+                if (settingsText) settingsText.textContent = 'تسجيل الدخول';
+            }
+            lucide.createIcons();
+        }
+
+        // ============================================================
         // 🚀 START
         // ============================================================
         window.init = init;
@@ -6572,7 +6440,6 @@
         window.varRestart = varRestart;
         window.attemptUnban = attemptUnban;
         window.closeBannedModal = closeBannedModal;
-        window.closeWhatsNew = closeWhatsNew;
         window.loadFriends = loadFriends;
         window.loadRequests = loadRequests;
         window.loadLeaderboard = loadLeaderboard;
@@ -6610,11 +6477,12 @@
             }
         });
 
-        console.log('🎮 XO Arena v6.0 - Fully Loaded!');
+        console.log('🎮 XO Arena v7.0 - Fully Loaded!');
         console.log('🌟 Online features: Login, Friends, Rooms, Chat, Leaderboard, Ranked, Gifts!');
         console.log('🔥 Powered by Firebase v12.18.0!');
         console.log('🔒 Online features require authentication.');
         console.log('✅ Google Authentication Enabled');
+        console.log('🚫 Compensation popup removed successfully.');
 
     </script>
 </body>
