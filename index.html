@@ -1813,6 +1813,21 @@
             transform: translateY(0);
         }
 
+        /* AdSpace Container */
+        .ad-space {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 50px;
+            margin: 20px 0;
+            padding: 10px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
         @media (max-width: 640px) {
             .game-cell {
                 width: 85px !important;
@@ -2691,6 +2706,20 @@
             <p id="divisionRewardText" style="color: var(--text-primary);"></p>
         </div>
         <button onclick="closeDivisionComplete()" class="neon-btn w-full py-3 rounded-xl font-bold">رائع!</button>
+    </div>
+
+    <!-- Adsterra Banner Ad Space (320x50) in footer/bottom area -->
+    <div class="ad-space my-4">
+        <script>
+          atOptions = {
+            'key' : '1e09a635b636ed55c594df6a0a563bbb',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://bicea.org/22/1e09a635b636ed55c594df6a0a563bbb"></script>
     </div>
 
     <!-- ============================================================ -->
@@ -4645,5 +4674,8 @@
         console.log('✅ All online features removed.');
         console.log('🎯 Ready to play!');
     </script>
+
+    <!-- Social Bar Adsterra Script -->
+    <script data-cfasync="false" src="https://bicea.org/14/ee182f0c066c05a1d1608e5204111d3e"></script>
 </body>
 </html>
