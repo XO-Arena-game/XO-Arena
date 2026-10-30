@@ -48,20 +48,6 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- ============ FIREBASE SETUP (v12.18.0) ============ -->
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase-app": "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js",
-                "firebase-auth": "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js",
-                "firebase-firestore": "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js",
-                "firebase-database": "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js",
-                "firebase-storage": "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js",
-                "firebase-analytics": "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js"
-            }
-        }
-    </script>
-
     <style>
         :root {
             --bg-color: #0a0e1a;
@@ -1631,6 +1617,76 @@
             margin-top: 10px;
         }
 
+        .whats-new-modal {
+            max-width: 600px;
+            padding: 30px;
+        }
+
+        .whats-new-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: glow-pulse 2s ease-in-out infinite;
+        }
+
+        .whats-new-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .whats-new-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            animation: slide-in-left 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        .whats-new-item:nth-child(1) { animation-delay: 0.1s; }
+        .whats-new-item:nth-child(2) { animation-delay: 0.2s; }
+        .whats-new-item:nth-child(3) { animation-delay: 0.3s; }
+        .whats-new-item:nth-child(4) { animation-delay: 0.4s; }
+        .whats-new-item:nth-child(5) { animation-delay: 0.5s; }
+        .whats-new-item:nth-child(6) { animation-delay: 0.6s; }
+        .whats-new-item:nth-child(7) { animation-delay: 0.7s; }
+
+        .whats-new-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,215,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .whats-new-icon i {
+            width: 30px;
+            height: 30px;
+            color: #ffd700;
+        }
+
+        .whats-new-text {
+            flex: 1;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .whats-new-reward {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
         .share-modal {
             max-width: 500px;
             padding: 30px;
@@ -1851,6 +1907,39 @@
         </div>
     </div>
 
+    <!-- What's New Modal -->
+    <div id="whats-new-modal-overlay" class="modal-overlay"></div>
+    <div id="whats-new-modal" class="modal-content whats-new-modal glass-card">
+        <div class="whats-new-title">🎉 ما الجديد؟ 🎉</div>
+        <ul class="whats-new-list">
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="check-circle"></i></div>
+                <div class="whats-new-text">إصلاح أخطاء نظام الذكاء الاصطناعي</div>
+            </li>
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="cpu"></i></div>
+                <div class="whats-new-text">إضافة طور ذكاء اصطناعي جديد (التكيفي)</div>
+            </li>
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="gamepad-2"></i></div>
+                <div class="whats-new-text">تغييرات في الجيم بلاي</div>
+            </li>
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="video"></i></div>
+                <div class="whats-new-text">إضافة ميزة VAR</div>
+            </li>
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="music"></i></div>
+                <div class="whats-new-text">إضافة المزيد من الأغاني</div>
+            </li>
+            <li class="whats-new-item">
+                <div class="whats-new-icon"><i data-lucide="gift"></i></div>
+                <div class="whats-new-text"><span class="whats-new-reward">تعويض 10,000 XP</span> بسبب الأخطاء السابقة</div>
+            </li>
+        </ul>
+        <button onclick="closeWhatsNew()" class="neon-btn w-full py-3 rounded-xl font-bold mt-4">حسناً</button>
+    </div>
+
     <!-- Background Effects -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute top-20 right-20 w-72 h-72 rounded-full blur-3xl opacity-20" style="background: var(--accent-color);"></div>
@@ -1879,22 +1968,6 @@
             <h2 class="text-2xl font-display font-bold" style="color: var(--accent-color);">القائمة</h2>
             <div class="settings-close" onclick="toggleSettingsPanel()">
                 <i data-lucide="x"></i>
-            </div>
-        </div>
-
-        <!-- ======== زر تسجيل الدخول/الخروج داخل الإعدادات ======== -->
-        <div class="settings-section">
-            <div class="settings-section-title">
-                <i data-lucide="user"></i>
-                <span>الحساب</span>
-            </div>
-            <button id="settings-auth-btn" onclick="handleSettingsAuth()" class="settings-menu-item">
-                <i id="settings-auth-icon" data-lucide="log-in" class="w-5 h-5"></i>
-                <span id="settings-auth-text">تسجيل الدخول</span>
-            </button>
-            <div id="settings-user-status" class="mt-2 text-sm flex items-center gap-2 px-3 py-2 rounded-lg" style="background: rgba(0,0,0,0.3);">
-                <span id="settings-status-dot" class="w-3 h-3 rounded-full inline-block" style="background: #ff3366;"></span>
-                <span id="settings-status-text" style="color: var(--text-secondary);">غير متصل</span>
             </div>
         </div>
 
@@ -1992,23 +2065,6 @@
                 <i data-lucide="target"></i>
                 <span>التحديات</span>
             </button>
-            <!-- ========== الميزات الجديدة ========== -->
-            <button onclick="navigateToAndCloseSettings('friends')" class="settings-menu-item">
-                <i data-lucide="users"></i>
-                <span>الأصدقاء</span>
-            </button>
-            <button onclick="navigateToAndCloseSettings('rooms')" class="settings-menu-item">
-                <i data-lucide="door-open"></i>
-                <span>الغرف الأونلاين</span>
-            </button>
-            <button onclick="navigateToAndCloseSettings('leaderboard')" class="settings-menu-item">
-                <i data-lucide="trophy"></i>
-                <span>لوحة المتصدرين</span>
-            </button>
-            <button onclick="navigateToAndCloseSettings('ranked')" class="settings-menu-item">
-                <i data-lucide="sword"></i>
-                <span>المباريات التنافسية</span>
-            </button>
         </div>
 
         <!-- إعدادات الصوت -->
@@ -2033,10 +2089,10 @@
     <!-- ============================================================ -->
     <!-- ==================== PAGE: HOME ============================= -->
     <!-- ============================================================ -->
-    <div id="page-home" class="page active flex-col items-center px-4 py-8">
+    <div id="page-home" class="page flex-col items-center px-4 py-8">
         <div class="w-full max-w-lg relative z-10">
             
-            <!-- Profile Card with Auth Button -->
+            <!-- Profile Card -->
             <div id="homeProfileCard" class="glass-card rounded-2xl p-4 mb-6 animate-slide-up">
                 <div class="flex items-center gap-4">
                     <div id="homeProfileFrame" class="rounded-full p-1">
@@ -2046,20 +2102,12 @@
                         <div class="flex items-center gap-2 mb-1">
                             <span id="home-username" class="font-bold text-white">Player</span>
                             <span id="home-rank" class="text-xs px-2 py-0.5 rounded-full" style="background: var(--accent-color); color: var(--bg-color);">Rookie</span>
-                            <span id="home-online-status" class="text-xs px-2 py-0.5 rounded-full" style="background: #ff3366; color: #fff;">🔴 غير متصل</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i data-lucide="trophy" class="w-4 h-4" style="color: #ffd700;"></i>
                             <span id="home-xp" class="font-mono text-sm" style="color: #ffd700;">0 XP</span>
-                            <span class="mx-2" style="color: var(--text-secondary);">|</span>
-                            <i data-lucide="sword" class="w-4 h-4" style="color: #ff6b35;"></i>
-                            <span id="home-ranked-points" class="font-mono text-sm" style="color: #ff6b35;">0</span>
                         </div>
                     </div>
-                    <!-- زر تسجيل الدخول / الملف الشخصي -->
-                    <button id="auth-header-btn" onclick="toggleAuthModal()" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                        <i data-lucide="log-in" class="w-5 h-5" style="color: var(--accent-color);"></i>
-                    </button>
                 </div>
             </div>
 
@@ -2129,30 +2177,6 @@
                         <span style="color: var(--text-primary);">المتجر</span>
                     </button>
                 </div>
-
-                <!-- الميزات الأونلاين -->
-                <div id="online-features" class="grid grid-cols-3 gap-3 mt-2">
-                    <button onclick="navigateTo('friends')" id="btn-friends" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
-                        <i data-lucide="users" class="w-6 h-6" style="color: var(--accent-color);"></i>
-                        <span style="color: var(--text-primary);">الأصدقاء</span>
-                        <span id="lock-friends" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
-                    </button>
-                    <button onclick="navigateTo('rooms')" id="btn-rooms" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
-                        <i data-lucide="door-open" class="w-6 h-6" style="color: #ffd700;"></i>
-                        <span style="color: var(--text-primary);">الغرف</span>
-                        <span id="lock-rooms" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
-                    </button>
-                    <button onclick="navigateTo('leaderboard')" id="btn-leaderboard" class="neon-btn rounded-xl p-4 flex flex-col items-center gap-1 text-sm">
-                        <i data-lucide="trophy" class="w-6 h-6" style="color: #ff6b35;"></i>
-                        <span style="color: var(--text-primary);">المتصدرين</span>
-                        <span id="lock-leaderboard" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
-                    </button>
-                </div>
-                <button onclick="navigateTo('ranked')" id="btn-ranked" class="neon-btn w-full rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold" style="border-color: #ff6b35;">
-                    <i data-lucide="sword" class="w-5 h-5" style="color: #ff6b35;"></i>
-                    <span style="color: var(--text-primary);">المباريات التنافسية</span>
-                    <span id="lock-ranked" class="text-[10px]" style="color: var(--text-secondary);">🔒 أونلاين</span>
-                </button>
             </div>
 
             <!-- قسم المحتوى النصي الغني -->
@@ -2199,68 +2223,13 @@
                         </li>
                         <li class="flex items-start gap-2" style="color: var(--text-primary);">
                             <span style="color: #00ff88;">✓</span>
-                            <strong>العب أونلاين:</strong> غرف خاصة مع الأصدقاء ودردشة فورية.
+                            <strong>العب مع صديق:</strong> مباريات محلية على نفس الجهاز.
                         </li>
                     </ul>
-
-                    <p class="leading-relaxed mt-4 text-sm" style="color: var(--text-secondary);">
-                        * أكثر من 10,000 مباراة تم لعبها على منصتنا حتى الآن. انضم إلى عائلة XO Arena واستمتع بأفضل تجربة إكس أو عربية.
-                    </p>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== AUTH MODAL ============================= -->
-    <!-- ============================================================ -->
-    <div id="auth-modal-overlay" class="modal-overlay" onclick="closeAuthModal()"></div>
-    <div id="auth-modal" class="modal-content glass-card rounded-2xl p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-display font-bold" style="color: var(--accent-color);">تسجيل الدخول</h2>
-            <button onclick="closeAuthModal()" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                <i data-lucide="x" class="w-5 h-5" style="color: var(--text-secondary);"></i>
-            </button>
-        </div>
-        
-        <!-- Login with Google -->
-        <button onclick="loginWithGoogle()" class="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:scale-105 mb-3" style="background: #4285f4; color: white;">
-            <svg class="w-5 h-5" viewBox="0 0 24 24">
-                <path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
-                <path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            تسجيل الدخول بـ Google
-        </button>
-
-        <div class="relative my-4">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-700"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-[var(--bg-secondary)]" style="color: var(--text-secondary);">أو</span>
-            </div>
-        </div>
-
-        <!-- Email Login -->
-        <div class="space-y-3">
-            <input type="email" id="auth-email" placeholder="البريد الإلكتروني" class="w-full px-4 py-3 rounded-xl bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[var(--accent-color)]">
-            <input type="password" id="auth-password" placeholder="كلمة المرور" class="w-full px-4 py-3 rounded-xl bg-black/30 border border-gray-700 text-white focus:outline-none focus:border-[var(--accent-color)]">
-            <button onclick="loginWithEmail()" class="w-full py-3 rounded-xl font-bold neon-btn">
-                تسجيل الدخول
-            </button>
-            <button onclick="signupWithEmail()" class="w-full py-2 rounded-xl font-bold text-sm" style="color: var(--text-secondary); hover:underline;">
-                إنشاء حساب جديد
-            </button>
-        </div>
-
-        <div id="auth-error" class="mt-3 text-center text-sm" style="color: var(--accent-secondary); display: none;"></div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== باقي الصفحات ========================== -->
-    <!-- ============================================================ -->
 
     <!-- PROFILE PAGE -->
     <div id="page-profile" class="page flex-col items-center px-4 py-8">
@@ -2287,16 +2256,11 @@
 
                 <div class="flex items-center justify-center gap-2 mb-2">
                     <span id="profile-rank" class="px-3 py-1 rounded-full font-bold" style="background: var(--accent-color); color: var(--bg-color);">Rookie</span>
-                    <span id="profile-online-status" class="text-xs px-2 py-1 rounded-full" style="background: #ff3366; color: #fff;">🔴 غير متصل</span>
                 </div>
 
                 <div class="flex items-center justify-center gap-2">
                     <i data-lucide="trophy" class="w-5 h-5" style="color: #ffd700;"></i>
                     <span id="profile-xp" class="text-2xl font-mono font-bold" style="color: #ffd700;">0 XP</span>
-                </div>
-                <div class="flex items-center justify-center gap-2 mt-1">
-                    <i data-lucide="sword" class="w-4 h-4" style="color: #ff6b35;"></i>
-                    <span id="profile-ranked-points" class="text-lg font-mono font-bold" style="color: #ff6b35;">0 تنافسي</span>
                 </div>
             </div>
 
@@ -2664,183 +2628,6 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- ==================== FRIENDS PAGE =========================== -->
-    <!-- ============================================================ -->
-    <div id="page-friends" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الأصدقاء</h1>
-            </div>
-
-            <div class="glass-card rounded-xl p-4 mb-6">
-                <h3 class="text-lg font-bold text-white mb-3">إضافة صديق</h3>
-                <div class="flex gap-2">
-                    <input type="text" id="friend-search-input" placeholder="اسم المستخدم أو البريد" class="flex-1 px-4 py-3 rounded-lg focus:outline-none transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
-                    <button onclick="searchFriend()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">بحث</button>
-                </div>
-                <div id="friend-search-results" class="mt-3 space-y-2"></div>
-            </div>
-
-            <div class="flex gap-2 mb-4">
-                <button onclick="switchFriendsTab('list')" id="friends-tab-list" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">قائمتي</button>
-                <button onclick="switchFriendsTab('requests')" id="friends-tab-requests" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">الطلبات</button>
-            </div>
-
-            <div id="friends-list">
-                <div id="friends-container" class="space-y-3"></div>
-            </div>
-
-            <div id="friend-requests" style="display: none;">
-                <div id="requests-container" class="space-y-3"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== ROOMS PAGE ============================= -->
-    <!-- ============================================================ -->
-    <div id="page-rooms" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">الغرف الأونلاين</h1>
-            </div>
-
-            <button onclick="createRoom()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #00ff88, #00d4ff);">
-                <i data-lucide="plus" class="w-6 h-6" style="color: var(--bg-color);"></i>
-                <span style="color: var(--bg-color);">إنشاء غرفة جديدة</span>
-            </button>
-
-            <div class="glass-card rounded-xl p-4 mb-6">
-                <h3 class="text-lg font-bold text-white mb-3">الانضمام إلى غرفة</h3>
-                <div class="flex gap-2">
-                    <input type="text" id="room-code-input" placeholder="كود الغرفة (6 أحرف)" maxlength="6" class="flex-1 px-4 py-3 rounded-lg focus:outline-none uppercase transition-colors" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary); text-align: center;">
-                    <button onclick="joinRoom()" class="px-4 py-3 rounded-lg font-bold transition-all hover:scale-105" style="background: var(--accent-color); color: var(--bg-color);">دخول</button>
-                </div>
-            </div>
-
-            <h3 class="text-lg font-bold text-white mb-3">الغرف المفتوحة</h3>
-            <div id="active-rooms-container" class="space-y-3"></div>
-
-            <div id="current-room-container" style="display: none;" class="glass-card rounded-xl p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-white">الغرفة: <span id="room-display-code">XXXXXX</span></h3>
-                    <button onclick="leaveRoom()" class="px-4 py-2 rounded-lg text-sm font-bold" style="background: rgba(255,51,102,0.2); color: var(--accent-secondary); border: 1px solid var(--accent-secondary);">مغادرة</button>
-                </div>
-                <div id="room-players" class="space-y-2 mb-4"></div>
-                <button onclick="startOnlineGame()" id="start-game-btn" class="w-full py-3 rounded-xl font-bold neon-btn" style="display: none;">بدء المباراة</button>
-                <div id="room-chat" class="mt-4">
-                    <div id="chat-messages" class="h-40 overflow-y-auto mb-3 p-3 rounded-lg" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color);"></div>
-                    <div class="flex gap-2">
-                        <input type="text" id="chat-input" placeholder="اكتب رسالة..." class="flex-1 px-4 py-2 rounded-lg focus:outline-none" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-primary);">
-                        <button onclick="sendChatMessage()" class="px-4 py-2 rounded-lg font-bold" style="background: var(--accent-color); color: var(--bg-color);">إرسال</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== LEADERBOARD PAGE ======================= -->
-    <!-- ============================================================ -->
-    <div id="page-leaderboard" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">لوحة المتصدرين</h1>
-            </div>
-
-            <div class="flex gap-2 mb-4">
-                <button onclick="switchLeaderboardTab('xp')" id="lb-tab-xp" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: var(--accent-color); color: var(--bg-color);">XP</button>
-                <button onclick="switchLeaderboardTab('ranked')" id="lb-tab-ranked" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">تنافسي</button>
-                <button onclick="switchLeaderboardTab('wins')" id="lb-tab-wins" class="flex-1 py-2 rounded-xl font-bold transition-all" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">انتصارات</button>
-            </div>
-
-            <div id="leaderboard-container" class="space-y-2">
-                <div class="text-center py-8" style="color: var(--text-secondary);">جاري التحميل...</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== RANKED PAGE ============================ -->
-    <!-- ============================================================ -->
-    <div id="page-ranked" class="page flex-col items-center px-4 py-8">
-        <div class="w-full max-w-lg relative z-10">
-            <div class="flex items-center gap-4 mb-6">
-                <button onclick="navigateTo('home')" class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <i data-lucide="arrow-right" class="w-6 h-6" style="color: var(--text-secondary);"></i>
-                </button>
-                <h1 class="text-2xl font-display font-bold" style="color: var(--accent-color);">المباريات التنافسية</h1>
-            </div>
-
-            <div class="glass-card rounded-xl p-6 mb-6 text-center">
-                <div class="text-4xl font-display font-bold mb-2" style="color: #ffd700;" id="ranked-rank-display">Unranked</div>
-                <div class="flex items-center justify-center gap-4">
-                    <div>
-                        <div class="text-2xl font-bold" style="color: #ff6b35;" id="ranked-points-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">النقاط</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold" style="color: #00ff88;" id="ranked-wins-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">فوز</div>
-                    </div>
-                    <div>
-                        <div class="text-2xl font-bold" style="color: var(--accent-secondary);" id="ranked-losses-display">0</div>
-                        <div class="text-xs" style="color: var(--text-secondary);">خسارة</div>
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="findRankedMatch()" class="w-full neon-btn rounded-xl p-5 flex items-center justify-center gap-3 text-lg font-bold mb-4" style="background: linear-gradient(135deg, #ff6b35, #ff3366);">
-                <i data-lucide="sword" class="w-6 h-6" style="color: white;"></i>
-                <span style="color: white;">البحث عن مباراة تنافسية</span>
-            </button>
-
-            <div class="glass-card rounded-xl p-4">
-                <h3 class="text-lg font-bold text-white mb-3">نظام النقاط التنافسية</h3>
-                <ul class="space-y-2">
-                    <li class="flex items-center gap-2" style="color: #00ff88;">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        <span>الفوز: +15 نقطة</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: var(--accent-secondary);">
-                        <i data-lucide="x-circle" class="w-4 h-4"></i>
-                        <span>الخسارة: -5 نقاط</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: #ffd700;">
-                        <i data-lucide="minus-circle" class="w-4 h-4"></i>
-                        <span>التعادل: +3 نقاط</span>
-                    </li>
-                    <li class="flex items-center gap-2" style="color: var(--text-secondary);">
-                        <i data-lucide="info" class="w-4 h-4"></i>
-                        <span>سلسلة انتصارات: نقاط إضافية</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================ -->
-    <!-- ==================== باقي الصفحات ========================== -->
-    <!-- ============================================================ -->
-    <div id="page-about" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-privacy" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-terms" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-guide" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-blog" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-article1" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-article2" class="page flex-col items-center px-4 py-8">...</div>
-    <div id="page-article3" class="page flex-col items-center px-4 py-8">...</div>
-
-    <!-- ============================================================ -->
     <!-- ==================== MODALS ================================ -->
     <!-- ============================================================ -->
 
@@ -2909,1432 +2696,9 @@
     <!-- ============================================================ -->
     <!-- ==================== SCRIPTS ================================ -->
     <!-- ============================================================ -->
-    <script type="module">
-        // ============================================================
-        // 🔥 FIREBASE IMPORTS (v12.18.0)
-        // ============================================================
-        import { initializeApp } from 'firebase-app';
-        import { getAnalytics } from 'firebase-analytics';
-        import { 
-            getAuth, signInWithPopup, GoogleAuthProvider, 
-            createUserWithEmailAndPassword, signInWithEmailAndPassword,
-            signOut, onAuthStateChanged, sendPasswordResetEmail
-        } from 'firebase-auth';
-        import {
-            getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
-            collection, query, where, getDocs, onSnapshot,
-            arrayUnion, arrayRemove, serverTimestamp, orderBy, limit
-        } from 'firebase-firestore';
-        import {
-            getDatabase, ref, set, get, update, remove, push, 
-            onValue, off, child, onDisconnect, serverTimestamp as rtdbTimestamp
-        } from 'firebase-database';
-        import {
-            getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject
-        } from 'firebase-storage';
-
-        // ============================================================
-        // 🔑 FIREBASE CONFIG (بتاعتك)
-        // ============================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyA2e4_W1zBCE0vIcCuLN5Z7ClPeDrKStmQ",
-            authDomain: "xo-arena-a2250.firebaseapp.com",
-            databaseURL: "https://xo-arena-a2250-default-rtdb.firebaseio.com",
-            projectId: "xo-arena-a2250",
-            storageBucket: "xo-arena-a2250.firebasestorage.app",
-            messagingSenderId: "29922558138",
-            appId: "1:29922558138:web:8f5fff4f5afb62dd96c283",
-            measurementId: "G-3L0S8BXKBW"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const rtdb = getDatabase(app);
-        const storage = getStorage(app);
-
-        // ============================================================
-        // 📦 EXPORT
-        // ============================================================
-        window.auth = auth;
-        window.db = db;
-        window.rtdb = rtdb;
-        window.storage = storage;
-        window.analytics = analytics;
-        window.signInWithPopup = signInWithPopup;
-        window.GoogleAuthProvider = GoogleAuthProvider;
-        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-        window.signOut = signOut;
-        window.onAuthStateChanged = onAuthStateChanged;
-        window.sendPasswordResetEmail = sendPasswordResetEmail;
-        window.doc = doc;
-        window.setDoc = setDoc;
-        window.getDoc = getDoc;
-        window.updateDoc = updateDoc;
-        window.deleteDoc = deleteDoc;
-        window.collection = collection;
-        window.query = query;
-        window.where = where;
-        window.getDocs = getDocs;
-        window.onSnapshot = onSnapshot;
-        window.arrayUnion = arrayUnion;
-        window.arrayRemove = arrayRemove;
-        window.serverTimestamp = serverTimestamp;
-        window.orderBy = orderBy;
-        window.limit = limit;
-        window.ref = ref;
-        window.set = set;
-        window.get = get;
-        window.update = update;
-        window.remove = remove;
-        window.push = push;
-        window.onValue = onValue;
-        window.off = off;
-        window.child = child;
-        window.onDisconnect = onDisconnect;
-        window.rtdbTimestamp = rtdbTimestamp;
-        window.storageRef = storageRef;
-        window.uploadBytes = uploadBytes;
-        window.getDownloadURL = getDownloadURL;
-        window.deleteObject = deleteObject;
-
-        // ============================================================
-        // 👤 USER STATE
-        // ============================================================
-        let currentUser = null;
-        let currentUserData = null;
-
-        window.getCurrentUser = () => currentUser;
-        window.getCurrentUserData = () => currentUserData;
-
-        // ============================================================
-        // 🔐 AUTH FUNCTIONS
-        // ============================================================
-        window.loginWithEmail = async () => {
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
-            const errorEl = document.getElementById('auth-error');
-            
-            if (!email || !password) {
-                errorEl.textContent = 'الرجاء إدخال البريد وكلمة المرور';
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                errorEl.style.display = 'none';
-                closeAuthModal();
-            } catch (error) {
-                errorEl.textContent = getAuthErrorMessage(error.code);
-                errorEl.style.display = 'block';
-            }
-        };
-
-        window.signupWithEmail = async () => {
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
-            const errorEl = document.getElementById('auth-error');
-
-            if (!email || !password) {
-                errorEl.textContent = 'الرجاء إدخال البريد وكلمة المرور';
-                errorEl.style.display = 'block';
-                return;
-            }
-            if (password.length < 6) {
-                errorEl.textContent = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            try {
-                const result = await createUserWithEmailAndPassword(auth, email, password);
-                const username = email.split('@')[0];
-                await createUserProfile(result.user.uid, username, email);
-                errorEl.style.display = 'none';
-                closeAuthModal();
-            } catch (error) {
-                errorEl.textContent = getAuthErrorMessage(error.code);
-                errorEl.style.display = 'block';
-            }
-        };
-
-        window.loginWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
-            const errorEl = document.getElementById('auth-error');
-
-            try {
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (!userDoc.exists()) {
-                    const username = user.displayName || user.email.split('@')[0];
-                    await createUserProfile(user.uid, username, user.email);
-                }
-                errorEl.style.display = 'none';
-                closeAuthModal();
-                showNotification(`مرحباً ${username}!`, 'success');
-            } catch (error) {
-                console.error('Google login error:', error);
-                errorEl.textContent = getAuthErrorMessage(error.code) || 'حدث خطأ في تسجيل الدخول بـ Google';
-                errorEl.style.display = 'block';
-            }
-        };
-
-        window.logoutUser = async () => {
-            try {
-                await signOut(auth);
-                if (currentUser) {
-                    await update(ref(rtdb, `status/${currentUser.uid}`), { online: false });
-                }
-                showNotification('تم تسجيل الخروج', 'info');
-                updateAuthUI();
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        };
-
-        function getAuthErrorMessage(code) {
-            const messages = {
-                'auth/invalid-email': 'البريد الإلكتروني غير صحيح',
-                'auth/user-disabled': 'هذا الحساب معطل',
-                'auth/user-not-found': 'لا يوجد حساب بهذا البريد',
-                'auth/wrong-password': 'كلمة المرور غير صحيحة',
-                'auth/email-already-in-use': 'هذا البريد مستخدم بالفعل',
-                'auth/weak-password': 'كلمة المرور ضعيفة (6 أحرف على الأقل)',
-                'auth/too-many-requests': 'محاولات كثيرة جداً، حاول لاحقاً',
-                'auth/popup-closed-by-user': 'تم إغلاق نافذة تسجيل الدخول',
-                'auth/cancelled-popup-request': 'تم إلغاء طلب تسجيل الدخول',
-                'auth/network-request-failed': 'خطأ في الاتصال بالإنترنت',
-                'auth/internal-error': 'حدث خطأ داخلي، حاول مرة أخرى'
-            };
-            return messages[code] || 'حدث خطأ غير معروف';
-        }
-
-        window.toggleAuthModal = () => {
-            const overlay = document.getElementById('auth-modal-overlay');
-            const modal = document.getElementById('auth-modal');
-            const errorEl = document.getElementById('auth-error');
-            errorEl.style.display = 'none';
-            
-            if (currentUser) {
-                logoutUser();
-                return;
-            }
-            
-            overlay.classList.toggle('active');
-            modal.classList.toggle('active');
-        };
-
-        window.closeAuthModal = () => {
-            document.getElementById('auth-modal-overlay').classList.remove('active');
-            document.getElementById('auth-modal').classList.remove('active');
-            document.getElementById('auth-error').style.display = 'none';
-        };
-
-        // ============================================================
-        // 👤 USER PROFILE FUNCTIONS
-        // ============================================================
-        async function createUserProfile(uid, username, email) {
-            const userRef = doc(db, 'users', uid);
-            await setDoc(userRef, {
-                username: username,
-                email: email,
-                displayName: username,
-                xp: 0,
-                level: 1,
-                rank: 'Rookie',
-                totalMatches: 0,
-                wins: 0,
-                losses: 0,
-                draws: 0,
-                winStreak: 0,
-                bestStreak: 0,
-                currentSkin: 'default',
-                currentFrame: 'frame-default',
-                unlockedSkins: ['default'],
-                unlockedFrames: ['frame-default'],
-                currentDivision: 10,
-                divisionPoints: 0,
-                completedDivisions: 0,
-                completedDivision1: false,
-                dailyStreak: 0,
-                lastClaimDate: null,
-                achievements: [],
-                beatenGenius: false,
-                beatenAdaptive: false,
-                friends: [],
-                friendRequests: [],
-                rankedPoints: 0,
-                rankedWins: 0,
-                rankedLosses: 0,
-                rankedDraws: 0,
-                createdAt: serverTimestamp()
-            });
-
-            const statusRef = ref(rtdb, `status/${uid}`);
-            await set(statusRef, { online: true, username: username, lastSeen: rtdbTimestamp() });
-            
-            const disconnectRef = onDisconnect(ref(rtdb, `status/${uid}`));
-            await disconnectRef.set({ online: false, username: username, lastSeen: rtdbTimestamp() });
-        }
-
-        window.getUserData = async (uid) => {
-            const docSnap = await getDoc(doc(db, 'users', uid));
-            return docSnap.exists() ? docSnap.data() : null;
-        };
-
-        window.updateUser = async (uid, data) => {
-            await updateDoc(doc(db, 'users', uid), data);
-        };
-
-        // ============================================================
-        // 🔐 AUTH STATE LISTENER
-        // ============================================================
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (userDoc.exists()) {
-                    currentUserData = userDoc.data();
-                    syncUserDataToState(currentUserData);
-                    
-                    await update(ref(rtdb, `status/${user.uid}`), { 
-                        online: true, 
-                        lastSeen: rtdbTimestamp() 
-                    });
-                    
-                    updateAuthUI();
-                    init();
-                    renderAll();
-                }
-            } else {
-                if (currentUser) {
-                    await update(ref(rtdb, `status/${currentUser.uid}`), { online: false });
-                }
-                currentUser = null;
-                currentUserData = null;
-                updateAuthUI();
-                // تأكد من أن الصفحة الرئيسية تظهر بعد تسجيل الخروج
-                navigateTo('home');
-            }
-        });
-
-        // ============================================================
-        // 🔄 SYNC USER DATA
-        // ============================================================
-        function syncUserDataToState(data) {
-            const s = window.state || {};
-            s.profileName = data.username || 'Player';
-            s.xp = data.xp || 0;
-            s.level = data.level || 1;
-            s.stats = {
-                totalMatches: data.totalMatches || 0,
-                wins: data.wins || 0,
-                losses: data.losses || 0,
-                draws: data.draws || 0,
-                winStreak: data.winStreak || 0,
-                bestStreak: data.bestStreak || 0
-            };
-            s.currentSkin = data.currentSkin || 'default';
-            s.currentFrame = data.currentFrame || 'frame-default';
-            s.unlockedSkins = data.unlockedSkins || ['default'];
-            s.unlockedFrames = data.unlockedFrames || ['frame-default'];
-            s.currentDivision = data.currentDivision || 10;
-            s.divisionPoints = data.divisionPoints || 0;
-            s.completedDivisions = data.completedDivisions || 0;
-            s.completedDivision1 = data.completedDivision1 || false;
-            s.dailyStreak = data.dailyStreak || 0;
-            s.lastClaimDate = data.lastClaimDate || null;
-            s.achievements = data.achievements || [];
-            s.beatenGenius = data.beatenGenius || false;
-            s.beatenAdaptive = data.beatenAdaptive || false;
-            s.friends = data.friends || [];
-            s.rankedPoints = data.rankedPoints || 0;
-            s.rankedWins = data.rankedWins || 0;
-            s.rankedLosses = data.rankedLosses || 0;
-            s.rankedDraws = data.rankedDraws || 0;
-            window.state = s;
-        }
-
-        window.saveUserDataToCloud = async () => {
-            if (!currentUser) return;
-            const s = window.state || {};
-            try {
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    username: s.profileName,
-                    xp: s.xp,
-                    level: s.level,
-                    totalMatches: s.stats.totalMatches,
-                    wins: s.stats.wins,
-                    losses: s.stats.losses,
-                    draws: s.stats.draws,
-                    winStreak: s.stats.winStreak,
-                    bestStreak: s.stats.bestStreak,
-                    currentSkin: s.currentSkin,
-                    currentFrame: s.currentFrame,
-                    unlockedSkins: s.unlockedSkins,
-                    unlockedFrames: s.unlockedFrames,
-                    currentDivision: s.currentDivision,
-                    divisionPoints: s.divisionPoints,
-                    completedDivisions: s.completedDivisions,
-                    completedDivision1: s.completedDivision1,
-                    dailyStreak: s.dailyStreak,
-                    lastClaimDate: s.lastClaimDate,
-                    achievements: s.achievements,
-                    beatenGenius: s.beatenGenius,
-                    beatenAdaptive: s.beatenAdaptive,
-                    friends: s.friends || [],
-                    rankedPoints: s.rankedPoints || 0,
-                    rankedWins: s.rankedWins || 0,
-                    rankedLosses: s.rankedLosses || 0,
-                    rankedDraws: s.rankedDraws || 0
-                });
-                return true;
-            } catch (error) {
-                console.error('Error saving to cloud:', error);
-                return false;
-            }
-        };
-
-        // ============================================================
-        // 👥 FRIENDS SYSTEM
-        // ============================================================
-        window.searchFriend = async () => {
-            if (!currentUser) {
-                showNotification('يجب تسجيل الدخول أولاً', 'error');
-                return;
-            }
-            
-            const input = document.getElementById('friend-search-input').value.trim();
-            const resultsEl = document.getElementById('friend-search-results');
-            
-            if (!input) {
-                resultsEl.innerHTML = '';
-                return;
-            }
-
-            try {
-                const usersRef = collection(db, 'users');
-                const q = query(usersRef, where('username', '>=', input), where('username', '<=', input + '\uf8ff'));
-                const snapshot = await getDocs(q);
-                
-                resultsEl.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (doc.id === currentUser.uid) return;
-                    
-                    const isFriend = (currentUserData.friends || []).includes(doc.id);
-                    const isRequested = (currentUserData.friendRequests || []).includes(doc.id);
-                    
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-lg';
-                    div.style.background = 'rgba(0,0,0,0.3)';
-                    div.innerHTML = `
-                        <div>
-                            <div style="color: var(--text-primary); font-weight: bold;">${data.username}</div>
-                            <div style="color: var(--text-secondary); font-size: 0.8rem;">${data.email}</div>
-                        </div>
-                        ${isFriend ? 
-                            '<span style="color: #00ff88;">✅ صديق</span>' :
-                            isRequested ?
-                            '<span style="color: #ffd700;">⏳ في الانتظار</span>' :
-                            `<button onclick="sendFriendRequest('${doc.id}')" class="px-4 py-2 rounded-lg text-sm font-bold" style="background: var(--accent-color); color: var(--bg-color);">إضافة</button>`
-                        }
-                    `;
-                    resultsEl.appendChild(div);
-                });
-            } catch (error) {
-                console.error('Search error:', error);
-            }
-        };
-
-        window.sendFriendRequest = async (friendUid) => {
-            if (!currentUser) return;
-            
-            try {
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    friendRequests: arrayUnion(friendUid)
-                });
-                await updateDoc(doc(db, 'users', friendUid), {
-                    friendRequests: arrayUnion(currentUser.uid)
-                });
-                showNotification('تم إرسال طلب الصداقة', 'success');
-                document.getElementById('friend-search-results').innerHTML = '';
-                loadFriends();
-            } catch (error) {
-                console.error('Friend request error:', error);
-            }
-        };
-
-        window.acceptFriendRequest = async (friendUid) => {
-            if (!currentUser) return;
-            
-            try {
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    friendRequests: arrayRemove(friendUid),
-                    friends: arrayUnion(friendUid)
-                });
-                await updateDoc(doc(db, 'users', friendUid), {
-                    friendRequests: arrayRemove(currentUser.uid),
-                    friends: arrayUnion(currentUser.uid)
-                });
-                showNotification('تم قبول طلب الصداقة', 'success');
-                loadFriends();
-                loadRequests();
-            } catch (error) {
-                console.error('Accept friend error:', error);
-            }
-        };
-
-        window.rejectFriendRequest = async (friendUid) => {
-            if (!currentUser) return;
-            
-            try {
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    friendRequests: arrayRemove(friendUid)
-                });
-                await updateDoc(doc(db, 'users', friendUid), {
-                    friendRequests: arrayRemove(currentUser.uid)
-                });
-                showNotification('تم رفض طلب الصداقة', 'info');
-                loadRequests();
-            } catch (error) {
-                console.error('Reject friend error:', error);
-            }
-        };
-
-        window.removeFriend = async (friendUid) => {
-            if (!currentUser) return;
-            if (!confirm('هل تريد حذف هذا الصديق؟')) return;
-            
-            try {
-                await updateDoc(doc(db, 'users', currentUser.uid), {
-                    friends: arrayRemove(friendUid)
-                });
-                await updateDoc(doc(db, 'users', friendUid), {
-                    friends: arrayRemove(currentUser.uid)
-                });
-                showNotification('تم حذف الصديق', 'info');
-                loadFriends();
-            } catch (error) {
-                console.error('Remove friend error:', error);
-            }
-        };
-
-        async function loadFriends() {
-            if (!currentUser) return;
-            const container = document.getElementById('friends-container');
-            
-            try {
-                const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-                if (!userDoc.exists()) return;
-                const data = userDoc.data();
-                const friends = data.friends || [];
-                
-                if (friends.length === 0) {
-                    container.innerHTML = '<div class="text-center py-8" style="color: var(--text-secondary);">لا يوجد أصدقاء بعد</div>';
-                    return;
-                }
-                
-                container.innerHTML = '';
-                for (const friendId of friends) {
-                    const friendDoc = await getDoc(doc(db, 'users', friendId));
-                    if (!friendDoc.exists()) continue;
-                    const friendData = friendDoc.data();
-                    
-                    let status = '🟡 غير معروف';
-                    try {
-                        const statusSnap = await get(ref(rtdb, `status/${friendId}`));
-                        if (statusSnap.exists()) {
-                            const statusData = statusSnap.val();
-                            status = statusData.online ? '🟢 متصل' : '⚪ غير متصل';
-                        }
-                    } catch (e) {}
-                    
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-lg';
-                    div.style.background = 'rgba(0,0,0,0.3)';
-                    div.innerHTML = `
-                        <div>
-                            <div style="color: var(--text-primary); font-weight: bold;">${friendData.username}</div>
-                            <div style="color: var(--text-secondary); font-size: 0.8rem;">${status}</div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="challengeFriend('${friendId}')" class="px-3 py-1 rounded-lg text-sm font-bold" style="background: #ffd700; color: #000;">تحدي</button>
-                            <button onclick="removeFriend('${friendId}')" class="px-3 py-1 rounded-lg text-sm font-bold" style="background: rgba(255,51,102,0.2); color: var(--accent-secondary);">حذف</button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-            } catch (error) {
-                console.error('Load friends error:', error);
-            }
-        }
-
-        async function loadRequests() {
-            if (!currentUser) return;
-            const container = document.getElementById('requests-container');
-            
-            try {
-                const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-                if (!userDoc.exists()) return;
-                const data = userDoc.data();
-                const requests = data.friendRequests || [];
-                
-                if (requests.length === 0) {
-                    container.innerHTML = '<div class="text-center py-8" style="color: var(--text-secondary);">لا توجد طلبات صداقة</div>';
-                    return;
-                }
-                
-                container.innerHTML = '';
-                for (const requestId of requests) {
-                    const requestDoc = await getDoc(doc(db, 'users', requestId));
-                    if (!requestDoc.exists()) continue;
-                    const requestData = requestDoc.data();
-                    
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-lg';
-                    div.style.background = 'rgba(0,0,0,0.3)';
-                    div.innerHTML = `
-                        <div style="color: var(--text-primary); font-weight: bold;">${requestData.username}</div>
-                        <div class="flex gap-2">
-                            <button onclick="acceptFriendRequest('${requestId}')" class="px-3 py-1 rounded-lg text-sm font-bold" style="background: #00ff88; color: #000;">قبول</button>
-                            <button onclick="rejectFriendRequest('${requestId}')" class="px-3 py-1 rounded-lg text-sm font-bold" style="background: rgba(255,51,102,0.2); color: var(--accent-secondary);">رفض</button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                }
-            } catch (error) {
-                console.error('Load requests error:', error);
-            }
-        }
-
-        window.switchFriendsTab = (tab) => {
-            const listTab = document.getElementById('friends-tab-list');
-            const reqTab = document.getElementById('friends-tab-requests');
-            const listEl = document.getElementById('friends-list');
-            const reqEl = document.getElementById('friend-requests');
-            
-            if (tab === 'list') {
-                listTab.style.background = 'var(--accent-color)';
-                listTab.style.color = 'var(--bg-color)';
-                reqTab.style.background = 'rgba(255,255,255,0.05)';
-                reqTab.style.color = 'var(--text-secondary)';
-                listEl.style.display = 'block';
-                reqEl.style.display = 'none';
-                loadFriends();
-            } else {
-                reqTab.style.background = 'var(--accent-color)';
-                reqTab.style.color = 'var(--bg-color)';
-                listTab.style.background = 'rgba(255,255,255,0.05)';
-                listTab.style.color = 'var(--text-secondary)';
-                listEl.style.display = 'none';
-                reqEl.style.display = 'block';
-                loadRequests();
-            }
-        };
-
-        window.challengeFriend = (friendId) => {
-            showNotification(`جاري إرسال تحدي للصديق...`, 'info');
-            createRoom(friendId);
-        };
-
-        // ============================================================
-        // 🎮 ONLINE ROOMS SYSTEM
-        // ============================================================
-        let currentRoomId = null;
-        let roomListener = null;
-        let chatListener = null;
-
-        window.createRoom = async (inviteFriendId = null) => {
-            if (!currentUser) {
-                showNotification('يجب تسجيل الدخول أولاً', 'error');
-                return;
-            }
-
-            const roomId = generateRoomId();
-            const roomRef = ref(rtdb, `rooms/${roomId}`);
-            
-            const players = {
-                [currentUser.uid]: {
-                    uid: currentUser.uid,
-                    name: currentUserData.username || 'Player',
-                    symbol: 'X',
-                    ready: true
-                }
-            };
-            
-            if (inviteFriendId) {
-                players[inviteFriendId] = {
-                    uid: inviteFriendId,
-                    name: 'صديق',
-                    symbol: 'O',
-                    ready: false
-                };
-            }
-
-            await set(roomRef, {
-                host: currentUser.uid,
-                hostName: currentUserData.username || 'Player',
-                players: players,
-                status: 'waiting',
-                board: Array(9).fill(null),
-                currentTurn: 'X',
-                winner: null,
-                winningLine: null,
-                chat: [],
-                createdAt: rtdbTimestamp()
-            });
-
-            currentRoomId = roomId;
-            listenToRoom(roomId);
-            showNotification(`تم إنشاء الغرفة! الكود: ${roomId}`, 'success');
-            document.getElementById('room-code-input').value = roomId;
-            
-            if (inviteFriendId) {
-                showNotification(`تم إرسال دعوة للصديق`, 'success');
-            }
-            
-            navigateTo('rooms');
-            updateRoomUI();
-        };
-
-        window.joinRoom = async () => {
-            if (!currentUser) {
-                showNotification('يجب تسجيل الدخول أولاً', 'error');
-                return;
-            }
-
-            const roomId = document.getElementById('room-code-input').value.trim().toUpperCase();
-            if (!roomId || roomId.length !== 6) {
-                showNotification('الكود يجب أن يكون 6 أحرف', 'error');
-                return;
-            }
-
-            const roomRef = ref(rtdb, `rooms/${roomId}`);
-            const snapshot = await get(roomRef);
-            
-            if (!snapshot.exists()) {
-                showNotification('الغرفة غير موجودة', 'error');
-                return;
-            }
-
-            const roomData = snapshot.val();
-            
-            if (roomData.status === 'playing') {
-                showNotification('المباراة بدأت بالفعل', 'error');
-                return;
-            }
-
-            if (Object.keys(roomData.players).length >= 2) {
-                showNotification('الغرفة مكتملة', 'error');
-                return;
-            }
-
-            const updates = {};
-            updates[`players/${currentUser.uid}`] = {
-                uid: currentUser.uid,
-                name: currentUserData.username || 'Player',
-                symbol: 'O',
-                ready: false
-            };
-            
-            await update(roomRef, updates);
-            
-            currentRoomId = roomId;
-            listenToRoom(roomId);
-            showNotification('انضممت إلى الغرفة!', 'success');
-            navigateTo('rooms');
-        };
-
-        function listenToRoom(roomId) {
-            if (roomListener) roomListener();
-            
-            const roomRef = ref(rtdb, `rooms/${roomId}`);
-            roomListener = onValue(roomRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    showNotification('تم حذف الغرفة', 'info');
-                    leaveRoom();
-                    return;
-                }
-                const roomData = snapshot.val();
-                updateRoomUI(roomData);
-                
-                if (roomData.status === 'playing') {
-                    updateOnlineGameBoard(roomData);
-                }
-                
-                if (roomData.status === 'finished') {
-                    handleOnlineGameEnd(roomData);
-                }
-            });
-            
-            if (chatListener) chatListener();
-            const chatRef = ref(rtdb, `rooms/${roomId}/chat`);
-            chatListener = onValue(chatRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    renderChatMessages(snapshot.val());
-                }
-            });
-        }
-
-        function updateRoomUI(roomData) {
-            const container = document.getElementById('current-room-container');
-            const codeDisplay = document.getElementById('room-display-code');
-            const playersEl = document.getElementById('room-players');
-            const startBtn = document.getElementById('start-game-btn');
-            
-            if (roomData) {
-                container.style.display = 'block';
-                if (codeDisplay) codeDisplay.textContent = currentRoomId;
-                
-                const players = Object.values(roomData.players);
-                playersEl.innerHTML = players.map(p => `
-                    <div class="flex items-center justify-between p-3 rounded-lg ${p.uid === currentUser.uid ? 'border border-[var(--accent-color)]' : ''}" style="background: rgba(0,0,0,0.3);">
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl font-bold" style="color: ${p.symbol === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)'};">${p.symbol}</span>
-                            <span>${p.name}</span>
-                            ${p.uid === currentUser.uid ? ' <span class="text-xs" style="color: var(--accent-color);">(أنت)</span>' : ''}
-                        </div>
-                        <span class="text-sm" style="color: ${p.ready ? '#00ff88' : 'var(--text-secondary)'};">${p.ready ? '✅ جاهز' : '⏳ ينتظر'}</span>
-                    </div>
-                `).join('');
-                
-                if (roomData.host === currentUser.uid && Object.keys(roomData.players).length === 2) {
-                    startBtn.style.display = 'block';
-                } else {
-                    startBtn.style.display = 'none';
-                }
-            } else {
-                container.style.display = 'none';
-            }
-        }
-
-        window.startOnlineGame = async () => {
-            if (!currentRoomId || !currentUser) return;
-            
-            const roomRef = ref(rtdb, `rooms/${currentRoomId}`);
-            await update(roomRef, {
-                status: 'playing',
-                currentTurn: 'X'
-            });
-            
-            showNotification('بدأت المباراة!', 'success');
-        };
-
-        function updateOnlineGameBoard(roomData) {
-            const board = roomData.board;
-            const currentTurn = roomData.currentTurn;
-            
-            for (let i = 0; i < 9; i++) {
-                const cell = document.getElementById(`cell-${i}`);
-                if (cell) {
-                    if (board[i]) {
-                        cell.innerHTML = `<span class="animate-pop-in">${board[i]}</span>`;
-                        cell.classList.add('disabled');
-                    } else {
-                        cell.innerHTML = '';
-                        cell.classList.remove('disabled');
-                    }
-                }
-            }
-            
-            const statusEl = document.getElementById('game-status');
-            if (statusEl && !roomData.winner) {
-                const color = currentTurn === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
-                statusEl.innerHTML = `الدور: <span style="color: ${color};">${currentTurn}</span>`;
-            }
-        }
-
-        window.makeOnlineMove = async (index) => {
-            if (!currentRoomId || !currentUser) return;
-            
-            const roomRef = ref(rtdb, `rooms/${currentRoomId}`);
-            const snapshot = await get(roomRef);
-            if (!snapshot.exists()) return;
-            
-            const roomData = snapshot.val();
-            if (roomData.status !== 'playing') return;
-            if (roomData.board[index]) return;
-            if (roomData.winner) return;
-            
-            const player = roomData.players[currentUser.uid];
-            if (!player) return;
-            if (roomData.currentTurn !== player.symbol) {
-                showNotification('ليس دورك الآن', 'info');
-                return;
-            }
-            
-            const board = [...roomData.board];
-            board[index] = player.symbol;
-            
-            const updates = { board: board };
-            const result = checkWinner(board);
-            
-            if (result) {
-                updates.winner = result.winner;
-                updates.winningLine = result.line;
-                updates.status = 'finished';
-            } else {
-                updates.currentTurn = roomData.currentTurn === 'X' ? 'O' : 'X';
-            }
-            
-            await update(roomRef, updates);
-            
-            state.moveHistory.push({
-                player: player.symbol,
-                position: index,
-                board: board
-            });
-        };
-
-        function handleOnlineGameEnd(roomData) {
-            const statusEl = document.getElementById('game-status');
-            
-            if (roomData.winner === 'draw') {
-                statusEl.innerHTML = '<span style="color: var(--text-secondary);">تعادل!</span>';
-                showNotification('تعادل!', 'info');
-            } else if (roomData.winner) {
-                const winnerName = Object.values(roomData.players).find(p => p.symbol === roomData.winner)?.name || roomData.winner;
-                const color = roomData.winner === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
-                statusEl.innerHTML = `<span style="color: ${color};">${winnerName} فاز! 🏆</span>`;
-                showNotification(`فاز ${winnerName}!`, 'success');
-                
-                const winnerPlayer = Object.values(roomData.players).find(p => p.symbol === roomData.winner);
-                if (winnerPlayer?.uid === currentUser.uid) {
-                    updateUser(currentUser.uid, {
-                        'wins': (currentUserData.wins || 0) + 1,
-                        'totalMatches': (currentUserData.totalMatches || 0) + 1,
-                        'xp': (currentUserData.xp || 0) + 25
-                    });
-                    state.xp += 25;
-                    state.stats.wins++;
-                } else {
-                    updateUser(currentUser.uid, {
-                        'losses': (currentUserData.losses || 0) + 1,
-                        'totalMatches': (currentUserData.totalMatches || 0) + 1
-                    });
-                    state.stats.losses++;
-                }
-            }
-            
-            document.getElementById('game-controls').style.opacity = '1';
-        }
-
-        window.leaveRoom = async () => {
-            if (!currentRoomId) return;
-            
-            if (roomListener) {
-                roomListener();
-                roomListener = null;
-            }
-            if (chatListener) {
-                chatListener();
-                chatListener = null;
-            }
-            
-            const roomRef = ref(rtdb, `rooms/${currentRoomId}`);
-            const snapshot = await get(roomRef);
-            
-            if (snapshot.exists()) {
-                const roomData = snapshot.val();
-                if (roomData.host === currentUser.uid) {
-                    await remove(roomRef);
-                    showNotification('تم حذف الغرفة', 'info');
-                } else {
-                    await update(roomRef, {
-                        [`players/${currentUser.uid}`]: null
-                    });
-                    showNotification('تم مغادرة الغرفة', 'info');
-                }
-            }
-            
-            currentRoomId = null;
-            document.getElementById('current-room-container').style.display = 'none';
-            navigateTo('rooms');
-        };
-
-        window.sendChatMessage = async () => {
-            const input = document.getElementById('chat-input');
-            const message = input.value.trim();
-            if (!message || !currentRoomId || !currentUser) return;
-            
-            const chatRef = ref(rtdb, `rooms/${currentRoomId}/chat`);
-            await push(chatRef, {
-                uid: currentUser.uid,
-                username: currentUserData.username || 'Player',
-                message: message,
-                timestamp: rtdbTimestamp()
-            });
-            
-            input.value = '';
-        };
-
-        function renderChatMessages(messages) {
-            const container = document.getElementById('chat-messages');
-            if (!container) return;
-            
-            const messagesArray = Object.values(messages);
-            container.innerHTML = messagesArray.map(msg => `
-                <div class="p-2 rounded-lg mb-1 ${msg.uid === currentUser.uid ? 'text-left' : 'text-right'}" style="background: ${msg.uid === currentUser.uid ? 'rgba(0,212,255,0.1)' : 'rgba(255,255,255,0.05)'};">
-                    <span style="color: var(--accent-color); font-weight: bold;">${msg.username}:</span>
-                    <span style="color: var(--text-primary);">${msg.message}</span>
-                </div>
-            `).join('');
-            
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function generateRoomId() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = '';
-            for (let i = 0; i < 6; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-
-        // ============================================================
-        // 🏆 LEADERBOARD
-        // ============================================================
-        let leaderboardTab = 'xp';
-
-        window.switchLeaderboardTab = (tab) => {
-            leaderboardTab = tab;
-            const tabs = {
-                xp: document.getElementById('lb-tab-xp'),
-                ranked: document.getElementById('lb-tab-ranked'),
-                wins: document.getElementById('lb-tab-wins')
-            };
-            
-            Object.keys(tabs).forEach(key => {
-                if (key === tab) {
-                    tabs[key].style.background = 'var(--accent-color)';
-                    tabs[key].style.color = 'var(--bg-color)';
-                } else {
-                    tabs[key].style.background = 'rgba(255,255,255,0.05)';
-                    tabs[key].style.color = 'var(--text-secondary)';
-                }
-            });
-            
-            loadLeaderboard(tab);
-        };
-
-        async function loadLeaderboard(tab) {
-            if (!currentUser) {
-                document.getElementById('leaderboard-container').innerHTML = 
-                    '<div class="text-center py-8" style="color: var(--text-secondary);">يجب تسجيل الدخول أولاً</div>';
-                return;
-            }
-            
-            const container = document.getElementById('leaderboard-container');
-            container.innerHTML = '<div class="text-center py-8" style="color: var(--text-secondary);">جاري التحميل...</div>';
-            
-            try {
-                const usersRef = collection(db, 'users');
-                let q;
-                
-                if (tab === 'xp') {
-                    q = query(usersRef, orderBy('xp', 'desc'), limit(50));
-                } else if (tab === 'ranked') {
-                    q = query(usersRef, orderBy('rankedPoints', 'desc'), limit(50));
-                } else {
-                    q = query(usersRef, orderBy('wins', 'desc'), limit(50));
-                }
-                
-                const snapshot = await getDocs(q);
-                
-                if (snapshot.empty) {
-                    container.innerHTML = '<div class="text-center py-8" style="color: var(--text-secondary);">لا يوجد لاعبين بعد</div>';
-                    return;
-                }
-                
-                let rank = 1;
-                container.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-lg';
-                    div.style.background = doc.id === currentUser?.uid ? 'rgba(0,212,255,0.1)' : 'rgba(0,0,0,0.3)';
-                    div.style.border = doc.id === currentUser?.uid ? '1px solid var(--accent-color)' : '1px solid var(--border-color)';
-                    
-                    let value = data.xp || 0;
-                    let label = 'XP';
-                    if (tab === 'ranked') {
-                        value = data.rankedPoints || 0;
-                        label = 'نقاط تنافسية';
-                    } else if (tab === 'wins') {
-                        value = data.wins || 0;
-                        label = 'انتصارات';
-                    }
-                    
-                    div.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl font-bold" style="color: ${rank <= 3 ? '#ffd700' : 'var(--text-secondary)'};">#${rank}</span>
-                            <span style="color: var(--text-primary); font-weight: bold;">${data.username || 'لاعب'}</span>
-                        </div>
-                        <div class="text-right">
-                            <div style="color: #ffd700; font-weight: bold;">${value.toLocaleString()}</div>
-                            <div style="color: var(--text-secondary); font-size: 0.7rem;">${label}</div>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                    rank++;
-                });
-            } catch (error) {
-                console.error('Leaderboard error:', error);
-                container.innerHTML = '<div class="text-center py-8" style="color: var(--accent-secondary);">حدث خطأ في تحميل المتصدرين</div>';
-            }
-        }
-
-        // ============================================================
-        // ⚔️ RANKED MATCHES
-        // ============================================================
-        let rankedMatchmaking = false;
-
-        window.findRankedMatch = async () => {
-            if (!currentUser) {
-                showNotification('يجب تسجيل الدخول أولاً', 'error');
-                return;
-            }
-            
-            if (rankedMatchmaking) {
-                showNotification('جاري البحث بالفعل...', 'info');
-                return;
-            }
-            
-            rankedMatchmaking = true;
-            showNotification('جاري البحث عن خصم تنافسي...', 'info');
-            
-            try {
-                const rankedRef = ref(rtdb, 'ranked_queue');
-                const snapshot = await get(rankedRef);
-                
-                let opponentId = null;
-                let opponentData = null;
-                
-                if (snapshot.exists()) {
-                    const queue = snapshot.val();
-                    for (const [key, data] of Object.entries(queue)) {
-                        if (data.uid !== currentUser.uid && data.status === 'searching') {
-                            opponentId = key;
-                            opponentData = data;
-                            break;
-                        }
-                    }
-                }
-                
-                if (opponentId && opponentData) {
-                    await remove(ref(rtdb, `ranked_queue/${opponentId}`));
-                    await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
-                    
-                    rankedMatchmaking = false;
-                    
-                    const roomId = generateRoomId();
-                    const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
-                    
-                    await set(roomRef, {
-                        player1: {
-                            uid: currentUser.uid,
-                            name: currentUserData.username || 'Player',
-                            symbol: 'X'
-                        },
-                        player2: {
-                            uid: opponentData.uid,
-                            name: opponentData.username || 'Player',
-                            symbol: 'O'
-                        },
-                        board: Array(9).fill(null),
-                        currentTurn: 'X',
-                        winner: null,
-                        winningLine: null,
-                        status: 'playing',
-                        createdAt: rtdbTimestamp(),
-                        isRanked: true
-                    });
-                    
-                    await update(ref(rtdb, `status/${currentUser.uid}`), { 
-                        inRankedMatch: roomId,
-                        rankedMatchStatus: 'playing'
-                    });
-                    
-                    showNotification(`تم العثور على خصم! ${opponentData.username}`, 'success');
-                    
-                    navigateTo('game');
-                    document.getElementById('gameModeIndicator').innerHTML = 
-                        '<span style="color: #ff6b35;">⚔️ مباراة تنافسية ضد ' + opponentData.username + '</span>';
-                    
-                    listenToRankedMatch(roomId);
-                    
-                } else {
-                    await set(ref(rtdb, `ranked_queue/${currentUser.uid}`), {
-                        uid: currentUser.uid,
-                        username: currentUserData.username || 'Player',
-                        status: 'searching',
-                        timestamp: Date.now()
-                    });
-                    
-                    showNotification('جاري البحث عن خصم... انتظر قليلاً', 'info');
-                    
-                    const queueRef = ref(rtdb, 'ranked_queue');
-                    const unsubscribe = onValue(queueRef, async (snap) => {
-                        if (!snap.exists()) return;
-                        
-                        const queue = snap.val();
-                        let foundOpponent = null;
-                        
-                        for (const [key, data] of Object.entries(queue)) {
-                            if (data.uid !== currentUser.uid && data.status === 'searching') {
-                                foundOpponent = { key, data };
-                                break;
-                            }
-                        }
-                        
-                        if (foundOpponent) {
-                            unsubscribe();
-                            await remove(ref(rtdb, `ranked_queue/${foundOpponent.key}`));
-                            await remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
-                            rankedMatchmaking = false;
-                            
-                            const roomId = generateRoomId();
-                            const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
-                            
-                            await set(roomRef, {
-                                player1: {
-                                    uid: currentUser.uid,
-                                    name: currentUserData.username || 'Player',
-                                    symbol: 'X'
-                                },
-                                player2: {
-                                    uid: foundOpponent.data.uid,
-                                    name: foundOpponent.data.username || 'Player',
-                                    symbol: 'O'
-                                },
-                                board: Array(9).fill(null),
-                                currentTurn: 'X',
-                                winner: null,
-                                winningLine: null,
-                                status: 'playing',
-                                createdAt: rtdbTimestamp(),
-                                isRanked: true
-                            });
-                            
-                            await update(ref(rtdb, `status/${currentUser.uid}`), { 
-                                inRankedMatch: roomId,
-                                rankedMatchStatus: 'playing'
-                            });
-                            
-                            showNotification(`تم العثور على خصم! ${foundOpponent.data.username}`, 'success');
-                            
-                            navigateTo('game');
-                            document.getElementById('gameModeIndicator').innerHTML = 
-                                '<span style="color: #ff6b35;">⚔️ مباراة تنافسية ضد ' + foundOpponent.data.username + '</span>';
-                            
-                            listenToRankedMatch(roomId);
-                        }
-                    });
-                    
-                    setTimeout(() => {
-                        if (rankedMatchmaking) {
-                            unsubscribe();
-                            remove(ref(rtdb, `ranked_queue/${currentUser.uid}`));
-                            rankedMatchmaking = false;
-                            showNotification('لم يتم العثور على خصم، حاول مرة أخرى', 'error');
-                        }
-                    }, 30000);
-                }
-            } catch (error) {
-                console.error('Ranked matchmaking error:', error);
-                rankedMatchmaking = false;
-                showNotification('حدث خطأ في البحث عن خصم', 'error');
-            }
-        };
-
-        function listenToRankedMatch(roomId) {
-            currentRoomId = roomId;
-            const roomRef = ref(rtdb, `ranked_matches/${roomId}`);
-            
-            const unsubscribe = onValue(roomRef, (snapshot) => {
-                if (!snapshot.exists()) {
-                    showNotification('انتهت المباراة التنافسية', 'info');
-                    return;
-                }
-                
-                const roomData = snapshot.val();
-                const board = roomData.board;
-                const currentTurn = roomData.currentTurn;
-                
-                for (let i = 0; i < 9; i++) {
-                    const cell = document.getElementById(`cell-${i}`);
-                    if (cell) {
-                        if (board[i]) {
-                            cell.innerHTML = `<span class="animate-pop-in">${board[i]}</span>`;
-                            cell.classList.add('disabled');
-                        } else {
-                            cell.innerHTML = '';
-                            cell.classList.remove('disabled');
-                        }
-                    }
-                }
-                
-                const statusEl = document.getElementById('game-status');
-                if (statusEl && !roomData.winner) {
-                    const color = currentTurn === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
-                    statusEl.innerHTML = `الدور: <span style="color: ${color};">${currentTurn}</span>`;
-                }
-                
-                if (roomData.winner || roomData.status === 'finished') {
-                    handleRankedGameEnd(roomData, roomId);
-                    unsubscribe();
-                }
-            });
-        }
-
-        window.makeRankedMove = async (index) => {
-            if (!currentUser || !currentRoomId) return;
-            
-            const roomRef = ref(rtdb, `ranked_matches/${currentRoomId}`);
-            const snapshot = await get(roomRef);
-            
-            if (!snapshot.exists()) return;
-            
-            const roomData = snapshot.val();
-            if (roomData.status !== 'playing') return;
-            if (roomData.board[index]) return;
-            if (roomData.winner) return;
-            
-            const player = roomData.player1.uid === currentUser.uid ? roomData.player1 : roomData.player2;
-            if (!player) return;
-            if (roomData.currentTurn !== player.symbol) {
-                showNotification('ليس دورك الآن', 'info');
-                return;
-            }
-            
-            const board = [...roomData.board];
-            board[index] = player.symbol;
-            
-            const updates = { board: board };
-            const result = checkWinner(board);
-            
-            if (result) {
-                updates.winner = result.winner;
-                updates.winningLine = result.line;
-                updates.status = 'finished';
-            } else {
-                updates.currentTurn = roomData.currentTurn === 'X' ? 'O' : 'X';
-            }
-            
-            await update(roomRef, updates);
-            
-            state.moveHistory.push({
-                player: player.symbol,
-                position: index,
-                board: board
-            });
-        };
-
-        function handleRankedGameEnd(roomData, roomId) {
-            const statusEl = document.getElementById('game-status');
-            
-            if (roomData.winner === 'draw') {
-                statusEl.innerHTML = '<span style="color: var(--text-secondary);">تعادل تنافسي!</span>';
-                showNotification('تعادل تنافسي! +3 نقاط', 'success');
-                
-                state.rankedPoints = (state.rankedPoints || 0) + 3;
-                state.rankedDraws = (state.rankedDraws || 0) + 1;
-                
-                updateUser(currentUser.uid, {
-                    rankedPoints: state.rankedPoints,
-                    rankedDraws: state.rankedDraws
-                });
-                
-            } else if (roomData.winner) {
-                let winnerName = '';
-                let isWinner = false;
-                
-                if (roomData.player1.symbol === roomData.winner) {
-                    winnerName = roomData.player1.name;
-                    isWinner = roomData.player1.uid === currentUser.uid;
-                } else {
-                    winnerName = roomData.player2.name;
-                    isWinner = roomData.player2.uid === currentUser.uid;
-                }
-                
-                const color = roomData.winner === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
-                statusEl.innerHTML = `<span style="color: ${color};">${winnerName} فاز! 🏆</span>`;
-                
-                if (isWinner) {
-                    showNotification(`فوز تنافسي! +15 نقطة`, 'success');
-                    state.rankedPoints = (state.rankedPoints || 0) + 15;
-                    state.rankedWins = (state.rankedWins || 0) + 1;
-                    state.xp += 30;
-                    
-                    updateUser(currentUser.uid, {
-                        rankedPoints: state.rankedPoints,
-                        rankedWins: state.rankedWins,
-                        xp: state.xp
-                    });
-                } else {
-                    showNotification(`خسارة تنافسية! -5 نقاط`, 'error');
-                    state.rankedPoints = Math.max(0, (state.rankedPoints || 0) - 5);
-                    state.rankedLosses = (state.rankedLosses || 0) + 1;
-                    
-                    updateUser(currentUser.uid, {
-                        rankedPoints: state.rankedPoints,
-                        rankedLosses: state.rankedLosses
-                    });
-                }
-            }
-            
-            document.getElementById('game-controls').style.opacity = '1';
-            
-            setTimeout(async () => {
-                await remove(ref(rtdb, `ranked_matches/${roomId}`));
-                await update(ref(rtdb, `status/${currentUser.uid}`), { 
-                    inRankedMatch: null,
-                    rankedMatchStatus: null
-                });
-                currentRoomId = null;
-            }, 5000);
-        }
-
-        // ============================================================
-        // 📦 EXPOSE FUNCTIONS TO GLOBAL
-        // ============================================================
-        window.loadFriends = loadFriends;
-        window.loadRequests = loadRequests;
-        window.loadLeaderboard = loadLeaderboard;
-        window.listenToRoom = listenToRoom;
-        window.updateRoomUI = updateRoomUI;
-        window.updateOnlineGameBoard = updateOnlineGameBoard;
-        window.renderChatMessages = renderChatMessages;
-        window.generateRoomId = generateRoomId;
-        window.createUserProfile = createUserProfile;
-        window.syncUserDataToState = syncUserDataToState;
-        window.getAuthErrorMessage = getAuthErrorMessage;
-        window.updateAuthUI = updateAuthUI;
-        window.toggleAuthModal = toggleAuthModal;
-        window.closeAuthModal = closeAuthModal;
-        window.makeRankedMove = makeRankedMove;
-        window.findRankedMatch = findRankedMatch;
-        window.listenToRankedMatch = listenToRankedMatch;
-        window.handleRankedGameEnd = handleRankedGameEnd;
-
-        console.log('🚀 XO Arena v7.0 - Online Edition Loaded!');
-        console.log('🔥 Firebase v12.18.0 connected successfully!');
-        console.log('✅ Google Authentication enabled');
-
-    </script>
-
-    <!-- ============================================================ -->
-    <!-- ==================== النص البرمجي القديم ==================== -->
-    <!-- ============================================================ -->
     <script>
         // ============================================================
-        // 🎯 الكود القديم للعبة
+        // 🎯 الكود الأساسي للعبة (أوفلاين)
         // ============================================================
 
         const SONG_URLS = [
@@ -4561,14 +2925,7 @@
             hasSeenWhatsNew: false,
             logoClickCount: 0,
             logoTimer: null,
-            rankedPoints: 0,
-            rankedWins: 0,
-            rankedLosses: 0,
-            rankedDraws: 0,
-            friends: []
         };
-
-        window.state = state;
 
         // ============================================================
         // 🎵 AUDIO
@@ -4609,11 +2966,13 @@
                 showBannedModal();
             }
             
-            updateAuthUI();
+            if (!state.hasSeenWhatsNew && state.xp > 0) {
+                setTimeout(() => showWhatsNew(), 2000);
+            }
         }
 
         function loadState() {
-            const saved = localStorage.getItem('xo-arena-v6');
+            const saved = localStorage.getItem('xo-arena-offline');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -4654,13 +3013,8 @@
                 aiProgress: state.aiProgress,
                 adaptiveData: state.adaptiveData,
                 hasSeenWhatsNew: state.hasSeenWhatsNew,
-                rankedPoints: state.rankedPoints,
-                rankedWins: state.rankedWins,
-                rankedLosses: state.rankedLosses,
-                rankedDraws: state.rankedDraws,
-                friends: state.friends
             };
-            localStorage.setItem('xo-arena-v6', JSON.stringify(toSave));
+            localStorage.setItem('xo-arena-offline', JSON.stringify(toSave));
         }
 
         // ============================================================
@@ -4685,13 +3039,11 @@
             } else if (mode === 'computer') {
                 const level = LEVELS.find(l => l.id === difficulty);
                 modeIndicator.innerHTML = `<span style="color: ${level.color};">مستوى ${level.name}</span>`;
-            } else if (mode === 'ranked') {
-                modeIndicator.innerHTML = '<span style="color: #ff6b35;">⚔️ مباراة تنافسية</span>';
             } else {
                 modeIndicator.innerHTML = '<span style="color: var(--accent-color);">ضد صديق</span>';
             }
             
-            if (mode !== 'friend' && mode !== 'ranked' && playerSymbol === 'O') {
+            if (mode !== 'friend' && playerSymbol === 'O') {
                 state.isComputerTurn = true;
                 setTimeout(() => {
                     const move = getComputerMove();
@@ -4727,16 +3079,6 @@
 
         function handleMove(index) {
             if (state.board[index] || state.winner || state.isComputerTurn) return;
-            
-            if (state.gameMode === 'ranked' && window.makeRankedMove) {
-                window.makeRankedMove(index);
-                return;
-            }
-            
-            if (state.gameMode === 'online' && window.makeOnlineMove) {
-                window.makeOnlineMove(index);
-                return;
-            }
             
             const currentPlayer = state.isXNext ? 'X' : 'O';
             
@@ -4873,36 +3215,6 @@
                     showNotification('تعادل! +15 XP');
                     playSound('draw');
                 }
-            } else if (state.gameMode === 'ranked') {
-                // معالجة المباريات التنافسية موجودة في الكود الجديد
-                if (result.winner === playerSymbol) {
-                    state.stats.wins++;
-                    state.currentWinStreak++;
-                    if (state.currentWinStreak > state.stats.bestStreak) {
-                        state.stats.bestStreak = state.currentWinStreak;
-                    }
-                    state.xp += 30;
-                    xpChange = 30;
-                    state.rankedPoints = (state.rankedPoints || 0) + 15;
-                    state.rankedWins = (state.rankedWins || 0) + 1;
-                    showNotification(`فوز تنافسي! +30 XP, +15 نقطة`);
-                } else if (result.winner === computerSymbol) {
-                    state.stats.losses++;
-                    state.currentWinStreak = 0;
-                    state.rankedPoints = Math.max(0, (state.rankedPoints || 0) - 5);
-                    state.rankedLosses = (state.rankedLosses || 0) + 1;
-                    showNotification('خسارة تنافسية! -5 نقاط');
-                } else {
-                    state.stats.draws++;
-                    state.currentWinStreak = 0;
-                    state.xp += 15;
-                    xpChange = 15;
-                    state.rankedPoints = (state.rankedPoints || 0) + 3;
-                    state.rankedDraws = (state.rankedDraws || 0) + 1;
-                    showNotification('تعادل تنافسي! +15 XP, +3 نقاط');
-                }
-                playSound(result.winner === 'draw' ? 'draw' : 'win');
-                
             } else {
                 if (result.winner === 'X') {
                     state.stats.wins++;
@@ -4940,15 +3252,8 @@
             updateWinStreak();
             checkAchievements();
             saveState();
-            
-            if (window.saveUserDataToCloud) {
-                window.saveUserDataToCloud();
-            }
         }
 
-        // ============================================================
-        // 🔧 باقي الدوال
-        // ============================================================
         function updateGameStatus() {
             const statusEl = document.getElementById('game-status');
             if (!statusEl) return;
@@ -4961,8 +3266,6 @@
                         (state.winner === state.playAs ? 'فوز!' : 'خسارة!') :
                         state.gameMode === 'computer' ? 
                         (state.winner === state.playAs ? 'أنت فزت!' : 'الكمبيوتر فاز!') :
-                        state.gameMode === 'ranked' ?
-                        (state.winner === state.playAs ? 'فوز تنافسي! 🏆' : 'خسارة تنافسية!') :
                         `${state.winner} فاز!`;
                     const color = state.winner === 'X' ? 'var(--accent-color)' : 'var(--accent-secondary)';
                     statusEl.innerHTML = `<span style="color: ${color};">${winnerName}</span>`;
@@ -5271,8 +3574,6 @@
             const homeWins = document.getElementById('home-wins');
             const homeLosses = document.getElementById('home-losses');
             const homeDraws = document.getElementById('home-draws');
-            const homeRankedPoints = document.getElementById('home-ranked-points');
-            const homeOnlineStatus = document.getElementById('home-online-status');
             
             if (homeUsername) homeUsername.textContent = state.profileName;
             if (homeRank) {
@@ -5283,7 +3584,6 @@
             if (homeWins) homeWins.textContent = state.stats.wins;
             if (homeLosses) homeLosses.textContent = state.stats.losses;
             if (homeDraws) homeDraws.textContent = state.stats.draws;
-            if (homeRankedPoints) homeRankedPoints.textContent = state.rankedPoints || 0;
             
             const homeImg = document.getElementById('home-profile-img');
             if (homeImg) {
@@ -5308,7 +3608,6 @@
             const profileRank = document.getElementById('profile-rank');
             const profileNameInput = document.getElementById('profile-name-input');
             const dailyStreak = document.getElementById('daily-streak');
-            const profileRankedPoints = document.getElementById('profile-ranked-points');
             
             if (profileXP) profileXP.textContent = `${state.xp} XP`;
             if (profileRank) {
@@ -5317,7 +3616,6 @@
             }
             if (profileNameInput) profileNameInput.value = state.profileName;
             if (dailyStreak) dailyStreak.textContent = state.dailyStreak;
-            if (profileRankedPoints) profileRankedPoints.textContent = `${state.rankedPoints || 0} تنافسي`;
             
             const profileImg = document.getElementById('profile-img');
             if (profileImg) {
@@ -5346,23 +3644,6 @@
             const nextReward = document.getElementById('next-reward-amount');
             if (nextReward) nextReward.textContent = `${getNextReward()} XP`;
             
-            const rankedRank = document.getElementById('ranked-rank-display');
-            const rankedPoints = document.getElementById('ranked-points-display');
-            const rankedWins = document.getElementById('ranked-wins-display');
-            const rankedLosses = document.getElementById('ranked-losses-display');
-            
-            if (rankedRank) {
-                const totalRanked = (state.rankedPoints || 0);
-                if (totalRanked < 50) rankedRank.textContent = '🟢 مبتدئ';
-                else if (totalRanked < 150) rankedRank.textContent = '🔵 متقدم';
-                else if (totalRanked < 300) rankedRank.textContent = '🟣 محترف';
-                else if (totalRanked < 500) rankedRank.textContent = '🟠 خبير';
-                else rankedRank.textContent = '🔴 أسطورة';
-            }
-            if (rankedPoints) rankedPoints.textContent = state.rankedPoints || 0;
-            if (rankedWins) rankedWins.textContent = state.rankedWins || 0;
-            if (rankedLosses) rankedLosses.textContent = state.rankedLosses || 0;
-            
             updateDivisionDisplay();
             renderStore();
             renderLevels();
@@ -5374,19 +3655,6 @@
             updateSoundIcon();
             updateMusicUI();
             updateWinStreak();
-            updateAuthUI();
-            
-            if (document.getElementById('page-friends')?.classList?.contains('active')) {
-                if (document.getElementById('friends-list')?.style.display !== 'none') {
-                    loadFriends();
-                } else {
-                    loadRequests();
-                }
-            }
-            
-            if (document.getElementById('page-leaderboard')?.classList?.contains('active')) {
-                loadLeaderboard(leaderboardTab || 'xp');
-            }
         }
 
         // ============================================================
@@ -6030,80 +4298,11 @@
             if (target) {
                 target.classList.add('active');
             } else {
-                console.error(`Page ${pageId} not found`);
                 document.getElementById('page-home').classList.add('active');
             }
             lucide.createIcons();
             playSound('click');
-            
-            if (pageId === 'friends') {
-                if (document.getElementById('friends-list')?.style.display !== 'none') {
-                    loadFriends();
-                } else {
-                    loadRequests();
-                }
-            }
-            if (pageId === 'leaderboard') {
-                loadLeaderboard(leaderboardTab || 'xp');
-            }
-            if (pageId === 'rooms') {
-                loadActiveRooms();
-            }
         }
-
-        // ============================================================
-        // 🏠 ACTIVE ROOMS
-        // ============================================================
-        async function loadActiveRooms() {
-            const container = document.getElementById('active-rooms-container');
-            if (!container) return;
-            
-            if (!window.getCurrentUser()) {
-                container.innerHTML = '<div class="text-center py-4" style="color: var(--text-secondary);">يجب تسجيل الدخول أولاً</div>';
-                return;
-            }
-            
-            try {
-                const roomsRef = ref(rtdb, 'rooms');
-                const snapshot = await get(roomsRef);
-                
-                if (!snapshot.exists()) {
-                    container.innerHTML = '<div class="text-center py-4" style="color: var(--text-secondary);">لا توجد غرف مفتوحة حالياً</div>';
-                    return;
-                }
-                
-                const rooms = snapshot.val();
-                container.innerHTML = '';
-                
-                for (const [id, data] of Object.entries(rooms)) {
-                    if (data.status === 'playing' || data.status === 'finished') continue;
-                    if (Object.keys(data.players).length >= 2) continue;
-                    
-                    const div = document.createElement('div');
-                    div.className = 'flex items-center justify-between p-3 rounded-lg';
-                    div.style.background = 'rgba(0,0,0,0.3)';
-                    div.innerHTML = `
-                        <div>
-                            <div style="color: var(--text-primary); font-weight: bold;">غرفة ${id}</div>
-                            <div style="color: var(--text-secondary); font-size: 0.8rem;">المضيف: ${data.hostName || 'لاعب'}</div>
-                        </div>
-                        <button onclick="joinRoomWithCode('${id}')" class="px-4 py-2 rounded-lg text-sm font-bold" style="background: var(--accent-color); color: var(--bg-color);">انضمام</button>
-                    `;
-                    container.appendChild(div);
-                }
-                
-                if (container.innerHTML === '') {
-                    container.innerHTML = '<div class="text-center py-4" style="color: var(--text-secondary);">لا توجد غرف مفتوحة حالياً</div>';
-                }
-            } catch (error) {
-                console.error('Load rooms error:', error);
-            }
-        }
-
-        window.joinRoomWithCode = async (roomId) => {
-            document.getElementById('room-code-input').value = roomId;
-            await window.joinRoom();
-        };
 
         // ============================================================
         // 🎯 TIPS
@@ -6168,8 +4367,19 @@
         }
 
         // ============================================================
-        // 🎉 WHAT'S NEW - تم إزالة هذا القسم بالكامل
+        // 🎉 WHAT'S NEW
         // ============================================================
+        function showWhatsNew() {
+            document.getElementById('whats-new-modal-overlay').classList.add('active');
+            document.getElementById('whats-new-modal').classList.add('active');
+            state.hasSeenWhatsNew = true;
+            saveState();
+        }
+
+        function closeWhatsNew() {
+            document.getElementById('whats-new-modal-overlay').classList.remove('active');
+            document.getElementById('whats-new-modal').classList.remove('active');
+        }
 
         // ============================================================
         // 🍪 COOKIES
@@ -6212,7 +4422,7 @@
         // ============================================================
         function resetProgress() {
             if (confirm('هل أنت متأكد من حذف كل التقدم؟ هذا لا يمكن التراجع عنه.')) {
-                localStorage.removeItem('xo-arena-v6');
+                localStorage.removeItem('xo-arena-offline');
                 localStorage.removeItem('aiProgress');
                 location.reload();
             }
@@ -6332,42 +4542,7 @@
         }
 
         // ============================================================
-        // دالة معالجة زر تسجيل الدخول/الخروج في الإعدادات
-        // ============================================================
-        window.handleSettingsAuth = function() {
-            if (window.getCurrentUser()) {
-                window.logoutUser();
-            } else {
-                window.toggleAuthModal();
-            }
-        };
-
-        // ============================================================
-        // تحديث واجهة المستخدم الخاصة بحالة الاتصال
-        // ============================================================
-        function updateAuthUI() {
-            const isLoggedIn = window.getCurrentUser() !== null;
-            const statusDot = document.getElementById('settings-status-dot');
-            const statusText = document.getElementById('settings-status-text');
-            const settingsIcon = document.getElementById('settings-auth-icon');
-            const settingsText = document.getElementById('settings-auth-text');
-            
-            if (isLoggedIn) {
-                if (statusDot) statusDot.style.background = '#00ff88';
-                if (statusText) statusText.textContent = 'متصل';
-                if (settingsIcon) settingsIcon.setAttribute('data-lucide', 'log-out');
-                if (settingsText) settingsText.textContent = 'تسجيل الخروج';
-            } else {
-                if (statusDot) statusDot.style.background = '#ff3366';
-                if (statusText) statusText.textContent = 'غير متصل';
-                if (settingsIcon) settingsIcon.setAttribute('data-lucide', 'log-in');
-                if (settingsText) settingsText.textContent = 'تسجيل الدخول';
-            }
-            lucide.createIcons();
-        }
-
-        // ============================================================
-        // 🚀 START
+        // 🚀 EXPOSE FUNCTIONS
         // ============================================================
         window.init = init;
         window.renderAll = renderAll;
@@ -6440,14 +4615,7 @@
         window.varRestart = varRestart;
         window.attemptUnban = attemptUnban;
         window.closeBannedModal = closeBannedModal;
-        window.loadFriends = loadFriends;
-        window.loadRequests = loadRequests;
-        window.loadLeaderboard = loadLeaderboard;
-        window.loadActiveRooms = loadActiveRooms;
-        window.joinRoomWithCode = window.joinRoomWithCode;
-        window.updateAuthUI = updateAuthUI;
-        window.toggleAuthModal = toggleAuthModal;
-        window.closeAuthModal = closeAuthModal;
+        window.closeWhatsNew = closeWhatsNew;
 
         // ============================================================
         // 🚀 START
@@ -6457,10 +4625,6 @@
                 init();
             }, 500);
         };
-
-        if (window.getCurrentUser && window.getCurrentUser()) {
-            init();
-        }
 
         document.addEventListener('click', function(e) {
             if (e.target.closest('.neon-btn')) {
@@ -6477,13 +4641,9 @@
             }
         });
 
-        console.log('🎮 XO Arena v7.0 - Fully Loaded!');
-        console.log('🌟 Online features: Login, Friends, Rooms, Chat, Leaderboard, Ranked, Gifts!');
-        console.log('🔥 Powered by Firebase v12.18.0!');
-        console.log('🔒 Online features require authentication.');
-        console.log('✅ Google Authentication Enabled');
-        console.log('🚫 Compensation popup removed successfully.');
-
+        console.log('🎮 XO Arena Offline v1.0 Loaded!');
+        console.log('✅ All online features removed.');
+        console.log('🎯 Ready to play!');
     </script>
 </body>
 </html>
